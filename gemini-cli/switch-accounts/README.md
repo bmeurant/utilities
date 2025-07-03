@@ -40,19 +40,14 @@
 
 6. Create alias (optional)   
 
-   * Edit your `~/.bashrc` or `~/.zshrc` file and add lines from [gemini_aliases.sh](./gemini_aliases.sh)
+   * Add the following line to your `~/.bashrc` or `~/.zshrc` file to source the aliases:
 
      ```bash
-     nano ~/.bashrc
+     source YOUR_PATH/gemini_aliases.sh
      ```
-     
-     or
+     (Ensure the path is correct for your setup.)
 
-     ```bash
-     nano ~/.zshrc
-     ```
-
-  * Source the file to apply changes:
+  * Source your shell configuration file to apply changes:
     
      ```bash
      source ~/.bashrc
