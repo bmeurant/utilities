@@ -119,7 +119,7 @@ def main():
     # No sys.exit(1) here, as we want to proceed even if config is missing/invalid
 
     source_dir = "sources"
-    output_dir = "output"
+    OUTPUT_DIR = "./markdown_output"
     
     process_all = False
     force_overwrite = False
@@ -145,10 +145,10 @@ def main():
             print("No HTML files found to process.")
             return
         for html_file in html_files:
-            convert_file(html_file, output_dir, config, force_overwrite)
+            convert_file(html_file, OUTPUT_DIR, config, force_overwrite)
     elif specific_file:
         print(f"Processing specific file: '{specific_file}' (overwrite enabled)...")
-        convert_file(specific_file, output_dir, config, force_overwrite=True)
+        convert_file(specific_file, OUTPUT_DIR, config, force_overwrite=True)
     else:
         print("Invalid arguments. Usage:")
         print("  python html_to_md.py                       (process all, skip existing)")

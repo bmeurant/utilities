@@ -3,5 +3,6 @@
 
 # sources and output files (sensitive information)
 sources/*.html
-output/*.md
+markdown_output/*.md
+html_output/*.html
 config.json
