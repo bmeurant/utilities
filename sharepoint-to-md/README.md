@@ -164,3 +164,61 @@ This will process all `.md` files in the `markdown_output` directory.
 -   **Output Directory:** Creates an `html_output` directory if it doesn't exist.
 -   **Conversion:** Uses the `markdown` library to convert each Markdown file to HTML.
 -   **Filename Generation:** Converts the `.md` extension to `.html` for the output files.
+
+## End-to-End Conversion (full_conversion.py)
+
+This script provides a complete end-to-end conversion workflow: from raw SharePoint HTML (in the `sources` directory) to clean Markdown (in `markdown_output`), and then to clean HTML (in `html_output`). It orchestrates the `html_to_md.py` and `md_to_html.py` scripts.
+
+### How to Use
+
+This script supports the same command-line options as `html_to_md.py` and `md_to_html.py` for consistency.
+
+#### Convert a Single File
+
+This will process a specific HTML file from the `sources` directory, convert it to Markdown, and then convert the resulting Markdown to HTML. It **always overwrites** the destination Markdown and HTML files if they exist.
+
+**Syntax:**
+```bash
+# If the file is in the sources/ directory
+python full_conversion.py <your_filename.html>
+
+# Or provide a full path
+python full_conversion.py <path/to/your_file.html>
+```
+
+**Examples:**
+```bash
+# This will process sources/plans-for-securing-production.html
+python full_conversion.py plans-for-securing-production.html
+
+# This does the same thing
+python full_conversion.py sources/plans-for-securing-production.html
+```
+
+#### Convert All Files
+
+This will process all `.html` files in the `sources` directory, convert them to Markdown, and then convert the resulting Markdown files to HTML.
+
+-   **Default Mode (Skip Existing):** If corresponding Markdown or HTML files already exist, the script will skip them unless `--force` is used.
+
+    **Syntax:**
+    ```bash
+    python full_conversion.py
+    ```
+    or
+    ```bash
+    python full_conversion.py all
+    ```
+
+-   **Force Overwrite Mode:** This will process all files and **overwrite** any existing Markdown and HTML files.
+
+    **Syntax:**
+    ```bash
+    python full_conversion.py all --force
+    ```
+
+### How It Works
+
+-   **Orchestration:** Calls `html_to_md.py` first, then `md_to_html.py`.
+-   **Argument Passing:** Passes the relevant arguments (like `--force`) to the underlying scripts.
+-   **Filename Prediction:** For single file conversions, it predicts the Markdown filename based on the HTML title to correctly pass it to `md_to_html.py`.
