@@ -5,10 +5,9 @@ import argparse
 from utils import generate_clean_filename, get_html_title
 
 def run_conversion_step(script_path, args):
-    """Runs a conversion script as a subprocess and prints its output."""
+    """Runs a conversion script as a subprocess. Its output is already printed by the subprocess itself."""
     command = [sys.executable, script_path] + args
-    process = subprocess.run(command, capture_output=True, text=True, check=False)
-    print(process.stdout, end='')
+    process = subprocess.run(command, capture_output=False, text=True, check=False) # Set capture_output to False
     if process.stderr:
         print(process.stderr, end='')
     return process.returncode == 0
@@ -16,17 +15,14 @@ def run_conversion_step(script_path, args):
 def main():
     parser = argparse.ArgumentParser(description="Perform end-to-end conversion from SharePoint HTML to clean HTML via Markdown.")
     parser.add_argument(
-        "input_path",
-        nargs="?",
-        help="Optional: The path to a specific HTML file to convert (e.g., 'my-page.html' or 'sources/my-page.html' or '/full/path/to/my-page.html'). If omitted, all .html files in the default input directory ('./sources') will be converted."
-    )
-    parser.add_argument(
         "--force",
         action="store_true",
         help="Force overwrite existing Markdown and HTML files."
     )
 
-    args = parser.parse_args()
+    # Parse only the --force argument using argparse
+    # Other arguments (file path or 'all') will be handled manually via sys.argv
+    args, unknown_args = parser.parse_known_args()
 
     html_to_md_script = "html_to_md.py"
     md_to_html_script = "md_to_html.py"
@@ -34,12 +30,52 @@ def main():
     source_dir = "sources"
     markdown_output_dir = "markdown_output"
 
-    if args.input_path:
+    process_all = False
+    specific_file = None
+    force_overwrite = args.force # Get force from argparse
+
+    # Manual parsing of positional arguments (file path or 'all')
+    if len(unknown_args) == 0:
+        # No positional argument, default to process all
+        process_all = True
+    elif len(unknown_args) == 1:
+        arg = unknown_args[0]
+        if arg == 'all':
+            process_all = True
+        else:
+            # Assume it's a specific file path
+            if os.path.isfile(arg):
+                specific_file = arg
+            else:
+                specific_file = os.path.join(source_dir, arg)
+            # For single file, force_overwrite is always True, regardless of --force flag
+            force_overwrite = True 
+    else:
+        print("Invalid arguments. Usage:")
+        print("  python full_conversion.py                       (process all, skip existing)")
+        print("  python full_conversion.py all                   (process all, skip existing)")
+        print("  python full_conversion.py all --force           (process all, force overwrite)")
+        print("  python full_conversion.py <filename.html>       (process one file, force overwrite)")
+        print("  python full_conversion.py <path/to/file.html>   (process one file, force overwrite)")
+        sys.exit(1)
+
+    if process_all:
+        # Step 1: HTML to Markdown (all files)
+        html_to_md_args = ["all"] + (["--force"] if force_overwrite else [])
+        if not run_conversion_step(html_to_md_script, html_to_md_args):
+            print(f"Error during HTML to Markdown conversion for all files. Aborting.")
+            sys.exit(1)
+
+        # Step 2: Markdown to HTML (all files)
+        # Step 2: Markdown to HTML (all files)
+        md_to_html_args = ["all"] + (["--force"] if force_overwrite else [])
+        if not run_conversion_step(md_to_html_script, md_to_html_args):
+            print(f"Error during Markdown to HTML conversion for all files. Aborting.")
+            sys.exit(1)
+    
+    elif specific_file:
         # Single file conversion
-        html_file_path = args.input_path
-        if not os.path.isabs(html_file_path):
-            if not os.path.exists(html_file_path): # Check if it's a relative path from CWD
-                html_file_path = os.path.join(source_dir, args.input_path)
+        html_file_path = specific_file
 
         if not os.path.exists(html_file_path):
             print(f"Error: HTML file not found: {html_file_path}")
@@ -73,23 +109,6 @@ def main():
         # Step 2: Markdown to HTML
         if not run_conversion_step(md_to_html_script, [predicted_md_path]):
             print(f"Error during Markdown to HTML conversion for '{predicted_md_path}'. Aborting.")
-            sys.exit(1)
-
-    else:
-        # All files conversion
-        force_arg = ["--force"] if args.force else []
-        mode_desc = "forcing overwrite" if args.force else "skipping existing"
-        print(f"Processing all HTML files in '{source_dir}' ({mode_desc})...")
-
-        # Step 1: HTML to Markdown (all files)
-        if not run_conversion_step(html_to_md_script, ["all"] + force_arg):
-            print(f"Error during HTML to Markdown conversion for all files. Aborting.")
-            sys.exit(1)
-
-        # Step 2: Markdown to HTML (all files)
-        print(f"Processing all Markdown files in '{markdown_output_dir}' ({mode_desc})...")
-        if not run_conversion_step(md_to_html_script, force_arg):
-            print(f"Error during Markdown to HTML conversion for all files. Aborting.")
             sys.exit(1)
     
     print("Full conversion process completed.")

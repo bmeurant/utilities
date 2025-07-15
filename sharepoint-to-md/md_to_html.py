@@ -91,5 +91,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    convert_md_to_html(input_path=args.input_path, force_overwrite=args.force)
+    if args.input_path == 'all':
+        input_path_for_conversion = None
+    else:
+        input_path_for_conversion = args.input_path
+
+    convert_md_to_html(input_path=input_path_for_conversion, force_overwrite=args.force)
 
