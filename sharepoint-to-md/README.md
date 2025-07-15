@@ -103,10 +103,10 @@ This will process all `.html` files in the `sources` directory.
 
 ## How It Works
 
--   **Title Extraction:** The script looks for an element with `id="title_text"` to use as the main page title (H1 in Markdown).
+-   **Title Extraction:** The script looks for an element with `id="title_text"` to use as the main page title (H1 in Markdown). **If no title is found, the script will use the source HTML filename (without its extension) as the title.**
 -   **Filename Generation:** The output filename is generated from this title (e.g., "My Awesome Page" becomes `my-awesome-page.md`). The resulting file is placed in the `markdown_output` directory.
--   **Content Extraction:** It finds all `div` elements with the attribute `data-sp-feature-tag="Rich Text Editor"` and combines their content.
--   **Link Processing:** Relative SharePoint links (starting with `/sites/`) are converted to absolute URLs using the `sharepoint_base_url` defined in `config.json`. If `config.json` is not present or configured, links remain relative.
+-   **Content Extraction:** It finds all `div` elements with the attribute `data-sp-feature-tag` set to `"Rich Text Editor"` or starting with `"QuickLinksWebPart"`, **as well as `div` elements with `data-viewport-id` starting with `"CanvasImg"`**, and combines their content.
+-   **Link Processing:** Relative SharePoint links (starting with `/sites/`) are converted to absolute URLs using the `sharepoint_base_url` defined in `config.json`. If `config.json` is not present or configured, links remain relative. **Additionally, special characters and newlines are removed from link text during this process.**
 -   **Conversion:** The extracted HTML is converted to Markdown, preserving headings, lists, bold/italic text, and links.
 -   **Cleanup:** Unnecessary link artifacts are removed by cleaning the HTML before conversion.
 
@@ -221,4 +221,4 @@ This will process all `.html` files in the `sources` directory, convert them to 
 
 -   **Orchestration:** Calls `html_to_md.py` first, then `md_to_html.py`.
 -   **Argument Passing:** Passes the relevant arguments (like `--force`) to the underlying scripts.
--   **Filename Prediction:** For single file conversions, it predicts the Markdown filename based on the HTML title to correctly pass it to `md_to_html.py`.
+-   **Filename Prediction:** For single file conversions, it predicts the Markdown filename based on the HTML title (or the source filename if no title is found) to correctly pass it to `md_to_html.py`.

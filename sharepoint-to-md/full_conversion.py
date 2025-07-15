@@ -91,8 +91,9 @@ def main():
                 html_content = f.read()
             title = get_html_title(html_content)
             if not title:
-                print(f"Warning: No title found in '{html_file_path}'. Cannot predict Markdown filename. Skipping.")
-                sys.exit(1)
+                base_name = os.path.basename(html_file_path)
+                title = os.path.splitext(base_name)[0]
+                print(f"Warning: No title found in '{html_file_path}'. Using filename as title: '{title}'")
             predicted_md_filename = generate_clean_filename(title) + '.md'
             predicted_md_path = os.path.join(markdown_output_dir, predicted_md_filename)
         except Exception as e:

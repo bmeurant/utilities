@@ -38,10 +38,14 @@ def process_links(soup, base_url):
     return soup
 
 def cleanup_html_content(soup):
-    """Removes useless link tags from the HTML before conversion."""
+    """Removes useless link tags and cleans link text from the HTML before conversion."""
     for a in soup.find_all('a'):
-        if not a.get_text(strip=True) or a.get_text(strip=True).replace('_', '') == '':
-            a.decompose()
+        # Clean link text: remove special characters and newlines
+        cleaned_text = re.sub(r'[^\w\s-]', '', a.get_text(strip=True)).replace('\n', ' ').strip()
+        if not cleaned_text:
+            a.decompose() # Remove if text becomes empty after cleaning
+        else:
+            a.string = cleaned_text # Update the link text
     return soup
 
 def convert_file(html_file_path, output_dir, config, force_overwrite=False):
@@ -58,8 +62,10 @@ def convert_file(html_file_path, output_dir, config, force_overwrite=False):
 
     title = get_html_title(html_content)
     if not title:
-        print(f"Warning: No title found in '{html_file_path}'. Skipping file.")
-        return
+        # Use filename as title if no title is found in HTML
+        base_name = os.path.basename(html_file_path)
+        title = os.path.splitext(base_name)[0]
+        print(f"Warning: No title found in '{html_file_path}'. Using filename as title: '{title}'")
 
     md_file_name = generate_clean_filename(title)
     output_md_path = os.path.join(output_dir, md_file_name + '.md')
@@ -77,11 +83,23 @@ def convert_file(html_file_path, output_dir, config, force_overwrite=False):
 
     main_title = f"# {title}\n\n"
 
-    rich_text_divs = soup.find_all('div', attrs={'data-sp-feature-tag': 'Rich Text Editor'})
-    if not rich_text_divs:
-        print(f"Warning: No 'Rich Text Editor' divs found in '{html_file_path}'. Content may be incomplete.")
+    def filter_content_divs(tag):
+        if tag.name == 'div':
+            # Check for data-sp-feature-tag
+            feature_tag = tag.get('data-sp-feature-tag')
+            if feature_tag and (feature_tag == 'Rich Text Editor' or feature_tag.startswith('QuickLinksWebPart')):
+                return True
+            # Check for data-viewport-id
+            viewport_id = tag.get('data-viewport-id')
+            if viewport_id and viewport_id.startswith('CanvasImg'):
+                return True
+        return False
 
-    combined_html = ''.join(str(div) for div in rich_text_divs)
+    content_divs = soup.find_all(filter_content_divs)
+    if not content_divs:
+        print(f"Warning: No relevant content divs found in '{html_file_path}'. Content may be incomplete.")
+
+    combined_html = ''.join(str(div) for div in content_divs)
     markdown_content = md(combined_html, heading_style="ATX", bullets='*')
 
     final_markdown_content = main_title + markdown_content
