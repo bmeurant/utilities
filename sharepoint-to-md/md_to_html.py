@@ -1,6 +1,8 @@
 import os
 import markdown
 import argparse
+import re
+from utils import generate_clean_filename
 
 MARKDOWN_INPUT_DIR = "./markdown_output"
 HTML_OUTPUT_DIR = "./html_output"
@@ -30,9 +32,7 @@ def convert_md_to_html(input_path=None, force_overwrite=False):
             print(f"Error: Provided file is not a Markdown file: {md_full_path}")
             return
 
-        base_md_filename = os.path.basename(md_full_path)
-        html_output_filename = base_md_filename.replace(".md", ".html")
-        files_to_process.append((md_full_path, html_output_filename))
+        files_to_process.append((md_full_path, None)) # HTML filename will be determined later
 
     else:
         mode = "forcing overwrite" if force_overwrite else "skipping existing"
@@ -41,28 +41,32 @@ def convert_md_to_html(input_path=None, force_overwrite=False):
         for md_filename in os.listdir(MARKDOWN_INPUT_DIR):
             if md_filename.endswith(".md"):
                 md_full_path = os.path.join(MARKDOWN_INPUT_DIR, md_filename)
-                html_output_filename = md_filename.replace(".md", ".html")
-                files_to_process.append((md_full_path, html_output_filename))
+                files_to_process.append((md_full_path, None)) # HTML filename will be determined later
 
-    for md_full_path, html_output_filename in files_to_process:
-        html_filepath = os.path.join(HTML_OUTPUT_DIR, html_output_filename)
-
-        should_skip = False
-        if os.path.exists(html_filepath):
-            if is_single_file_mode:
-                # In single file mode, always overwrite, so never skip if file exists
-                should_skip = False
-            elif not force_overwrite:
-                # In all files mode, skip if file exists and --force is not used
-                should_skip = True
-                print(f"Skipping '{md_full_path}': HTML file already exists. Use --force to overwrite.")
-
-        if should_skip:
-            continue
-
+    for i, (md_full_path, _) in enumerate(files_to_process):
         try:
             with open(md_full_path, "r", encoding="utf-8") as md_file:
                 md_content = md_file.read()
+
+            # Try to extract H1 title from Markdown content
+            h1_match = re.search(r'^#\s*(.+?)\s*$\n', md_content, re.MULTILINE)
+            if h1_match:
+                title_for_filename = h1_match.group(1)
+            else:
+                # Fallback to cleaned Markdown filename if no H1 is found
+                title_for_filename = os.path.basename(md_full_path).replace(".md", "")
+            
+            clean_html_filename = generate_clean_filename(title_for_filename) + ".html"
+            html_filepath = os.path.join(HTML_OUTPUT_DIR, clean_html_filename)
+
+            if os.path.exists(html_filepath):
+                if is_single_file_mode:
+                    # In single file mode, always overwrite
+                    pass
+                elif not force_overwrite:
+                    # In all files mode, skip if file exists and --force is not used
+                    print(f"Skipping '{md_full_path}': HTML file '{html_filepath}' already exists. Use --force to overwrite.")
+                    continue
 
             html_content = markdown.markdown(md_content)
 

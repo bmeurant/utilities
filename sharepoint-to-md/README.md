@@ -163,7 +163,7 @@ This will process all `.md` files in the `markdown_output` directory.
 -   **Input Directory:** Reads all `.md` files from the `markdown_output` directory.
 -   **Output Directory:** Creates an `html_output` directory if it doesn't exist.
 -   **Conversion:** Uses the `markdown` library to convert each Markdown file to HTML.
--   **Filename Generation:** Converts the `.md` extension to `.html` for the output files.
+-   **Filename Generation:** The output filename is generated from the H1 title found in the Markdown content. If no H1 title is present, a cleaned version of the Markdown filename is used. The `.md` extension is converted to `.html` for the output files.
 
 ## End-to-End Conversion (full_conversion.py)
 
