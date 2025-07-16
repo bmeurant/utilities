@@ -123,6 +123,21 @@ def main():
     # No sys.exit(1) here, as we want to proceed even if config is missing/invalid
 
     source_dir = "sources"
+    # Check for --sources_dir argument
+    if "--sources_dir" in sys.argv:
+        try:
+            index = sys.argv.index("--sources_dir")
+            if index + 1 < len(sys.argv):
+                source_dir = sys.argv[index + 1]
+                # Remove the argument and its value from sys.argv
+                sys.argv.pop(index)
+                sys.argv.pop(index)
+            else:
+                raise ValueError
+        except ValueError:
+            print("Error: --sources_dir requires a value.")
+            sys.exit(1)
+
     OUTPUT_DIR = "./markdown_output"
     
     process_all = False
@@ -155,11 +170,12 @@ def main():
         convert_file(specific_file, OUTPUT_DIR, config, force_overwrite=True)
     else:
         print("Invalid arguments. Usage:")
-        print("  python html_to_md.py                       (process all, skip existing)")
-        print("  python html_to_md.py all                   (process all, skip existing)")
-        print("  python html_to_md.py all --force           (process all, force overwrite)")
-        print("  python html_to_md.py <filename.html>       (process one file, force overwrite)")
-        print("  python html_to_md.py <path/to/file.html>   (process one file, force overwrite)")
+        print("  python sharepoint_to_md.py                       (process all, skip existing)")
+        print("  python sharepoint_to_md.py all                   (process all, skip existing)")
+        print("  python sharepoint_to_md.py all --force           (process all, force overwrite)")
+        print("  python sharepoint_to_md.py <filename.html>       (process one file, force overwrite)")
+        print("  python sharepoint_to_md.py <path/to/file.html>   (process one file, force overwrite)")
+        print("  (can be combined with --sources_dir <dir>)")
         sys.exit(1)
 
 if __name__ == "__main__":

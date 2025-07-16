@@ -5,12 +5,10 @@ import argparse
 from utils import generate_clean_filename, get_html_title
 
 def run_conversion_step(script_path, args):
-    """Runs a conversion script as a subprocess. Its output is already printed by the subprocess itself."""
+    """Runs a conversion script as a subprocess, streaming its output directly."""
     command = [sys.executable, script_path] + args
-    process = subprocess.run(command, capture_output=False, text=True, check=False) # Set capture_output to False
-    if process.stderr:
-        print(process.stderr, end='')
-    return process.returncode == 0
+    process = subprocess.run(command, stdout=sys.stdout, stderr=sys.stderr, text=True, check=False)
+    return process.returncode == 0, process.stdout, process.stderr
 
 def main():
     parser = argparse.ArgumentParser(description="Perform end-to-end conversion from SharePoint HTML to clean HTML via Markdown.")
@@ -24,7 +22,7 @@ def main():
     # Other arguments (file path or 'all') will be handled manually via sys.argv
     args, unknown_args = parser.parse_known_args()
 
-    html_to_md_script = "html_to_md.py"
+    sharepoint_to_md_script = "sharepoint_to_md.py"
     md_to_html_script = "md_to_html.py"
     
     source_dir = "sources"
@@ -60,20 +58,25 @@ def main():
         sys.exit(1)
 
     if process_all:
-        # Step 1: HTML to Markdown (all files)
-        html_to_md_args = ["all"] + (["--force"] if force_overwrite else [])
-        if not run_conversion_step(html_to_md_script, html_to_md_args):
-            print(f"Error during HTML to Markdown conversion for all files. Aborting.")
+        print(f"Starting full conversion for all files...")
+        # Step 1: SharePoint HTML to Markdown (all files)
+        sharepoint_to_md_args = ["all"] + (["--force"] if force_overwrite else [])
+        success, stdout, stderr = run_conversion_step(sharepoint_to_md_script, sharepoint_to_md_args)
+        if not success:
+            print(f"Error during SharePoint HTML to Markdown conversion for all files. Aborting.\n{stderr}")
             sys.exit(1)
+        print(f"SharePoint HTML to Markdown conversion completed for all files.")
 
         # Step 2: Markdown to HTML (all files)
-        # Step 2: Markdown to HTML (all files)
-        md_to_html_args = ["all"] + (["--force"] if force_overwrite else [])
-        if not run_conversion_step(md_to_html_script, md_to_html_args):
-            print(f"Error during Markdown to HTML conversion for all files. Aborting.")
+        md_to_html_args = ["all"] + (["--force"] if force_overwrite else []) + ["--sources_dir", markdown_output_dir]
+        success, stdout, stderr = run_conversion_step(md_to_html_script, md_to_html_args)
+        if not success:
+            print(f"Error during Markdown to HTML conversion for all files. Aborting.\n{stderr}")
             sys.exit(1)
+        print(f"Markdown to HTML conversion completed for all files.")
     
     elif specific_file:
+        print(f"Starting full conversion for specific file: '{specific_file}'...")
         # Single file conversion
         html_file_path = specific_file
 
@@ -100,17 +103,26 @@ def main():
             print(f"Error predicting Markdown filename for '{html_file_path}': {e}")
             sys.exit(1)
 
-        print(f"Processing specific file: '{html_file_path}' (overwrite enabled)...")
-
-        # Step 1: HTML to Markdown
-        if not run_conversion_step(html_to_md_script, [html_file_path]):
-            print(f"Error during HTML to Markdown conversion for '{html_file_path}'. Aborting.")
+        # Step 1: SharePoint HTML to Markdown
+        success, stdout, stderr = run_conversion_step(sharepoint_to_md_script, [html_file_path])
+        if not success:
+            print(f"Error during SharePoint HTML to Markdown conversion for '{html_file_path}'. Aborting.\n{stderr}")
             sys.exit(1)
+        if stdout:
+            for line in stdout.splitlines():
+                print(line)
+        print(f"SharePoint HTML to Markdown conversion completed for '{html_file_path}'.")
 
         # Step 2: Markdown to HTML
-        if not run_conversion_step(md_to_html_script, [predicted_md_path]):
-            print(f"Error during Markdown to HTML conversion for '{predicted_md_path}'. Aborting.")
+        md_to_html_args = [predicted_md_path] + ["--sources_dir", markdown_output_dir]
+        success, stdout, stderr = run_conversion_step(md_to_html_script, md_to_html_args)
+        if not success:
+            print(f"Error during Markdown to HTML conversion for '{predicted_md_path}'. Aborting.\n{stderr}")
             sys.exit(1)
+        if stdout:
+            for line in stdout.splitlines():
+                print(line)
+        print(f"Markdown to HTML conversion completed for '{predicted_md_path}'.")
     
     print("Full conversion process completed.")
 

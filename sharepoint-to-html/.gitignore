@@ -1,8 +1,12 @@
 # Python virtual environment
 .venv/
+__pycache__/
 
 # sources and output files (sensitive information)
 sources/*.html
 markdown_output/*.md
 html_output/*.html
 config.json
+
+# utils
+md_to_html.py
