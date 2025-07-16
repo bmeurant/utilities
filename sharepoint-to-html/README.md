@@ -191,6 +191,13 @@ This will process all `.html` files in the `sources` directory, convert them to 
     python full_conversion.py all --force
     ```
 
+-   **Custom Sources Directory:** You can specify a different sources directory using the `--sources_dir` argument. By default, the script looks for files in the `sources` directory.
+
+    **Syntax:**
+    ```bash
+    python full_conversion.py all --sources_dir <your_custom_directory>
+    ```
+
 ### How It Works
 
 -   **Orchestration:** Calls `sharepoint_to_md.py` first, then `md_to_html.py`.
