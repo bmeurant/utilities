@@ -1,0 +1,6 @@
+# Python virtual environment
+.venv/
+
+# sources and output files (sensitive information)
+sources/*.md
+html_output/*.html
