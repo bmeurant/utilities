@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associate Cloud Engineer Quizz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+        }
+        .options label:hover {
+            background-color: #e2e2e2;
+        }
+        .options input[type="radio"] {
+            margin-right: 8px;
+        }
+        .feedback {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        .score-display {
+            position: sticky;
+            top: 0;
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.2em;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            margin-bottom: 20px;
+        }
+        .score-total {
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        /* Style for options once answer is selected */
+        .answered .options label {
+            pointer-events: none; /* Prevent changing selection */
+        }
+        .answered .options label.selected-correct {
+            background-color: #c3e6cb; /* Light green for selected correct answer */
+        }
+        .answered .options label.selected-incorrect {
+            background-color: #f5c6cb; /* Light red for selected incorrect answer */
+        }
+        .answered .options label.correct-answer-highlight {
+            background-color: #d4edda; /* More vivid green for the correct answer (even if not selected) */
+            border: 1px dashed #155724;
+        }
+        .submit-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: not-allowed; /* Default to disabled state */
+            opacity: 0.6;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+        }
+        .submit-button:enabled {
+            cursor: pointer;
+            opacity: 1;
+            background-color: #218838;
+        }
+        .submit-button:enabled:hover {
+            background-color: #1e7e34;
+        }
+        .summary-section {
+            margin-top: 40px;
+            padding: 25px;
+            border: 2px solid #0056b3;
+            border-radius: 8px;
+            background-color: #e7f0fa;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
+        .summary-section h3 {
+            color: #0056b3;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .summary-details p {
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+        .summary-details .pass {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        .summary-details .fail {
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+<div class="score-display">
+    Score: <span id="current-score">0</span> / <span id="answered-count">0</span>
+    (Total questions: <span id="total-questions">0</span>)
+</div>
+<div class="container">
+    <h1>Associate Cloud Engineer Quizz</h1>
+    <div id="quiz-questions">
+    </div>
+
+    <button id="submit-quiz" class="submit-button" disabled>Submit Quiz</button>
+
+    <div id="quiz-summary" class="summary-section">
+        <h3>Quiz Results Summary</h3>
+        <div class="summary-details">
+            <p>Correct Answers: <span id="summary-correct">0</span></p>
+            <p>Incorrect Answers: <span id="summary-incorrect">0</span></p>
+            <p>Percentage: <span id="summary-percentage">0%</span></p>
+            <p id="summary-pass-fail" class=""></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Generated by your AI assistant.
+    </div>
+</div>
+
+<script>
+    // Data containing all questions, options, and correct answers.
+    const quizQuestions = [
+        {
+            question: "1. What is the main reason to use a non-relational data storage solution for an application requiring massive horizontal scalability and high performance on unstructured datasets?",
+            options: ["A. Relational databases", "B. NoSQL databases", "C. Object storage", "D. In-memory databases"],
+            correctAnswer: "B. NoSQL databases"
+        },
+        {
+            question: "2. Your company is considering migrating an existing monolithic application to Google Cloud, but wants to minimize code changes and maximize reuse of existing infrastructure. Which migration strategy would be most appropriate?",
+            options: ["A. Re-architecting", "B. Lift and shift (rehosting)", "C. Refactoring", "D. Replacement"],
+            correctAnswer: "B. Lift and shift (rehosting)"
+        },
+        {
+            question: "3. You are designing a new application that will process real-time data streams from thousands of IoT devices and require fast processing for instant analytics. Which Google Cloud service is best suited for collecting and ingesting this data?",
+            options: ["A. Cloud Storage", "B. BigQuery", "C. Cloud SQL", "D. Cloud Pub/Sub"],
+            correctAnswer: "D. Cloud Pub/Sub"
+        },
+        {
+            question: "4. You are designing an application for a company that must comply with data residency regulations, requiring all customer data to remain within a specific geographic region. Which design consideration is most important?",
+            options: ["A. Implementing encryption at rest", "B. Choosing the right Google Cloud region", "C. Using global services", "D. Configuring robust firewalls"],
+            correctAnswer: "B. Choosing the right Google Cloud region"
+        },
+        {
+            question: "5. An application requires fully managed, shared file storage that can be mounted by multiple Compute Engine instances and offers high performance for demanding I/O workloads. Which Google Cloud service should you recommend?",
+            options: ["A. Filestore", "B. Cloud Storage", "C. Persistent Disk", "D. Cloud SQL"],
+            correctAnswer: "A. Filestore"
+        },
+        {
+            question: "6. Your company plans to deploy a new high-traffic, global web application that needs to be highly available and fault-tolerant. Which general architecture is recommended to ensure resilience and traffic distribution?",
+            options: ["A. Single-zone deployment", "B. Single-region deployment", "C. Multi-region deployment with global load balancing", "D. On-premises deployment only"],
+            correctAnswer: "C. Multi-region deployment with global load balancing"
+        },
+        {
+            question: "7. You are designing a database for an e-commerce application that requires unlimited horizontal scalability, strong consistency, and low latencies on massive datasets globally. Which Google Cloud database is the most suitable for this use case?",
+            options: ["A. Cloud SQL", "B. Cloud Spanner", "C. Cloud Firestore", "D. Memorystore"],
+            correctAnswer: "B. Cloud Spanner"
+        },
+        {
+            question: "8. An existing on-premises file server needs to be migrated to Google Cloud. The file server contains millions of small files and needs to be accessible via an NFS protocol. What is the most appropriate solution to host this file server on Google Cloud?",
+            options: ["A. Filestore", "B. Cloud Storage", "C. Persistent Disk", "D. Transfer Appliance"],
+            correctAnswer: "A. Filestore"
+        },
+        {
+            question: "9. Your current on-premises web application is hosted on Windows servers and uses Microsoft SQL Server for its database. You want to migrate this application to Google Cloud with the fewest possible changes. Which combination of Google Cloud services should be used?",
+            options: ["A. App Engine and Cloud SQL for PostgreSQL", "B. Compute Engine (Windows VM) and Cloud SQL for SQL Server", "C. Cloud Run and Cloud Firestore", "D. Google Kubernetes Engine and Cloud Spanner"],
+            correctAnswer: "B. Compute Engine (Windows VM) and Cloud SQL for SQL Server"
+        },
+        {
+            question: "10. You are designing a storage solution for archive data that will be rarely accessed (less than once a year) but must be retained for several years for compliance reasons, with the lowest possible storage cost. Which Cloud Storage class should you use?",
+            options: ["A. Standard", "B. Nearline", "C. Coldline", "D. Archive"],
+            correctAnswer: "D. Archive"
+        },
+        {
+            question: "11. Your company needs to create a VPC network on Google Cloud that spans multiple regions and zones, and is completely isolated from the public Internet except for controlled access points. Which type of VPC network should you configure?",
+            options: ["A. Auto-mode network", "B. Custom-mode network", "C. Legacy network", "D. Default network"],
+            correctAnswer: "B. Custom-mode network"
+        },
+        {
+            question: "12. You need to grant a developer permission to create and manage Compute Engine instances in a specific project, but without giving them the ability to manage VPC networks or load balancers. Which IAM role should be assigned to the developer?",
+            options: ["A. Viewer", "B. Compute Instance Admin (v1)", "C. Editor", "D. Owner"],
+            correctAnswer: "B. Compute Instance Admin (v1)"
+        },
+        {
+            question: "13. You need to transfer terabytes of data from an on-premises data center to Cloud Storage quickly and securely, without using the public Internet. Which Google Cloud solution is most appropriate?",
+            options: ["A. Cloud VPN", "B. Cloud Interconnect", "C. Transfer Appliance", "D. Storage Transfer Service"],
+            correctAnswer: "C. Transfer Appliance"
+        },
+        {
+            question: "14. Your company wants to create a private, low-latency, high-bandwidth network connection between its on-premises data center and its Google Cloud VPC network. This connection must be dedicated and not traverse the public Internet. Which Google Cloud connectivity solution should be used?",
+            options: ["A. Cloud VPN", "B. Dedicated Interconnect", "C. Partner Interconnect", "D. Direct Peering"],
+            correctAnswer: "B. Dedicated Interconnect"
+        },
+        {
+            question: "15. You need to create an identity and access management strategy that allows external users (partners, customers) to securely access certain Google Cloud resources without needing a Google account. Which IAM feature or associated service is most suitable?",
+            options: ["A. Identity-Aware Proxy (IAP)", "B. Cloud Identity", "C. Service Accounts", "D. Managed Service for Microsoft Active Directory"],
+            correctAnswer: "A. Identity-Aware Proxy (IAP)"
+        },
+        {
+            question: "16. Your company uses multiple Google Cloud projects and wants all these projects to share a common VPC network to simplify IP address management and firewall rule application. Which Google Cloud service enables this architecture?",
+            options: ["A. VPC Network Peering", "B. Shared VPC", "C. Cloud VPN", "D. Cloud NAT"],
+            correctAnswer: "B. Shared VPC"
+        },
+        {
+            question: "17. You need to configure access to a Cloud SQL database securely and privately, without exposing the database to the public Internet. Compute Engine instances in your VPC must be able to connect to it. Which connection method should be preferred?",
+            options: ["A. Public IP address", "B. Cloud SQL Proxy", "C. Private IP connection (VPC Private Access)", "D. SQL Server Management Studio"],
+            correctAnswer: "C. Private IP connection (VPC Private Access)"
+        },
+        {
+            question: "18. Your development team needs a Google Cloud environment where they can create and delete resources at will for testing and development, without affecting production or staging environments. How should you structure your resources for this?",
+            options: ["A. Use separate Google Cloud projects", "B. Use different VPC networks within the same project", "C. Use Managed Instance Groups", "D. Use different zones within the same region"],
+            correctAnswer: "A. Use separate Google Cloud projects"
+        },
+        {
+            question: "19. Your security team needs to visualize all network traffic flows (TCP/UDP connections, sources, destinations, ports) between Compute Engine instances within your VPC network for auditing and troubleshooting purposes. Which Google Cloud feature should be enabled?",
+            options: ["A. VPC Flow Logs", "B. Cloud Audit Logs", "C. Cloud Logging", "D. Cloud Monitoring"],
+            correctAnswer: "A. VPC Flow Logs"
+        },
+        {
+            question: "20. You need to create a custom routing strategy in your VPC network to direct traffic to a third-party virtual appliance deployed on a Compute Engine instance. Which VPC network component should you configure?",
+            options: ["A. Firewall rules", "B. Instance groups", "C. Static routes", "D. Load Balancer"],
+            correctAnswer: "C. Static routes"
+        },
+        {
+            question: "21. Your application is deployed on Compute Engine instances behind a load balancer. You need to ensure that requests from the same user are always sent to the same backend instance to maintain session state. Which load balancer feature must you configure?",
+            options: ["A. Health Checks", "B. Autoscaling", "C. Session Affinity", "D. CDN"],
+            correctAnswer: "C. Session Affinity"
+        },
+        {
+            question: "22. You need to deploy a containerized application at scale on Google Cloud, which requires container orchestration, auto-scaling, high availability, and simplified service management. Which Google Cloud service is most appropriate?",
+            options: ["A. App Engine Standard", "B. Google Kubernetes Engine (GKE)", "C. Cloud Run", "D. Compute Engine"],
+            correctAnswer: "B. Google Kubernetes Engine (GKE)"
+        },
+        {
+            question: "23. Your application is composed of microservices deployed on different platforms (GKE, Cloud Run, Compute Engine). You need a way to centralize traffic management and apply security and resilience policies between these services. Which Google Cloud solution should you consider?",
+            options: ["A. Cloud Load Balancing", "B. Anthos Service Mesh (Istio)", "C. VPC Network Peering", "D. Cloud Armor"],
+            correctAnswer: "B. Anthos Service Mesh (Istio)"
+        },
+        {
+            question: "24. You need to deploy a serverless service that runs only in response to events (e.g., file uploads to Cloud Storage, Pub/Sub messages). The code must be written in Python and you want to pay only when the code executes. Which Google Cloud service is most suitable?",
+            options: ["A. App Engine Standard", "B. Cloud Run", "C. Cloud Functions", "D. Compute Engine"],
+            correctAnswer: "C. Cloud Functions"
+        },
+        {
+            question: "25. Your development team has created a serverless application that needs to be deployed on Google Cloud. It is written in Node.js and must be able to scale instantly from zero to thousands of requests per second, with precise per-second billing. Which Google Cloud service should you choose?",
+            options: ["A. App Engine Standard", "B. Cloud Run", "C. Cloud Functions", "D. Compute Engine (VMs)"],
+            correctAnswer: "B. Cloud Run"
+        },
+        {
+            question: "26. Your application is deployed on App Engine Standard. You want to implement a Canary deployment to introduce a new version of your application to a small percentage of users before a full rollout. How can you achieve this?",
+            options: ["A. Use App Engine's Traffic Splitting feature.", "B. Deploy the new version on a separate Compute Engine instance.", "C. Use an external load balancer with Managed Instance Groups.", "D. Update the application directly in production and monitor logs."],
+            correctAnswer: "A. Use App Engine's Traffic Splitting feature."
+        },
+        {
+            question: "27. You have an existing Docker container and want to deploy it on Google Cloud as an HTTP service without having to manage the underlying infrastructure (servers, scaling). The service should be able to scale to zero instances when there is no traffic. Which Google Cloud service is most appropriate?",
+            options: ["A. Google Kubernetes Engine (GKE)", "B. App Engine Flexible", "C. Compute Engine with instance templates", "D. Cloud Run"],
+            correctAnswer: "D. Cloud Run"
+        },
+        {
+            question: "28. You are developing a web application with a stateless backend that requires automatic scaling based on HTTP traffic. You want a fully managed service that handles resource provisioning and OS updates. Which Google Cloud service is most suitable?",
+            options: ["A. Compute Engine", "B. Google Kubernetes Engine (GKE)", "C. App Engine Standard Environment", "D. Cloud Functions"],
+            correctAnswer: "C. App Engine Standard Environment"
+        },
+        {
+            question: "29. Your application requires a fully managed MySQL relational database, with integrated high availability, automatic backups, and easy scalability. Which Google Cloud service is most appropriate?",
+            options: ["A. Compute Engine with MySQL installed", "B. Cloud SQL", "C. Cloud Spanner", "D. BigQuery"],
+            correctAnswer: "B. Cloud SQL"
+        },
+        {
+            question: "30. You need to deploy a cluster of Cassandra NoSQL database servers on Google Cloud. You want full control over server configuration, operating system, and Cassandra versions. Which Google Cloud service offers you the most control?",
+            options: ["A. Cloud Bigtable", "B. Cloud Firestore", "C. Compute Engine", "D. Cloud SQL"],
+            correctAnswer: "C. Compute Engine"
+        },
+        {
+            question: "31. Your application requires a low-latency, fully managed in-memory cache to accelerate data access to data stored in a database. Which Google Cloud service should you use?",
+            options: ["A. Cloud Storage", "B. Memorystore", "C. Cloud SQL", "D. Cloud Bigtable"],
+            correctAnswer: "B. Memorystore"
+        },
+        {
+            question: "32. You have a batch application that needs to process enormous volumes of data (Petabytes) in a parallel and distributed manner. You want to use a fully managed MapReduce or Apache Beam framework without having to manage clusters. Which Google Cloud service is most suitable?",
+            options: ["A. Dataproc", "B. Dataflow", "C. BigQuery", "D. Compute Engine"],
+            correctAnswer: "B. Dataflow"
+        },
+        {
+            question: "33. Your application needs a petabyte-scale, fully managed analytical data warehouse that supports SQL and allows very fast queries on massive datasets for business intelligence. Which Google Cloud service should you choose?",
+            options: ["A. Cloud SQL", "B. Cloud Spanner", "C. BigQuery", "D. Cloud Bigtable"],
+            correctAnswer: "C. BigQuery"
+        },
+        {
+            question: "34. You have deployed an application on Compute Engine and you want to collect custom metrics (e.g., number of requests processed per minute by the application) and configure dashboards to visualize these metrics, as well as alerts for threshold breaches. Which Google Cloud service should you use?",
+            options: ["A. Cloud Logging", "B. Cloud Trace", "C. Cloud Monitoring", "D. Cloud Audit Logs"],
+            correctAnswer: "C. Cloud Monitoring"
+        },
+        {
+            question: "35. Your application generates logs from various Compute Engine instances and App Engine services. You need a centralized solution to collect, store, analyze, and search these logs. Which Google Cloud service should you use?",
+            options: ["A. Cloud Monitoring", "B. Cloud Trace", "C. Cloud Audit Logs", "D. Cloud Logging"],
+            correctAnswer: "D. Cloud Logging"
+        },
+        {
+            question: "36. Your security team wants to track all administrative activities and data access within your Google Cloud project for compliance and auditing purposes. Which Google Cloud service provides this information by default?",
+            options: ["A. Cloud Monitoring", "B. Cloud Logging", "C. Cloud Audit Logs", "D. VPC Flow Logs"],
+            correctAnswer: "C. Cloud Audit Logs"
+        },
+        {
+            question: "37. Your web application uses a Managed Instance Group (MIG) behind an external load balancer. You observe that instances sometimes become unresponsive and require a manual restart. Which MIG feature should you configure to resolve this issue and ensure autohealing?",
+            options: ["A. Live Migration", "B. Preemptible VMs", "C. Health Checks with autohealing", "D. Instance Templates"],
+            correctAnswer: "C. Health Checks with autohealing"
+        },
+        {
+            question: "38. You want to deploy a new version of your Cloud Run application without service interruption and minimize risks. You want to expose the new version to a small percentage of traffic (e.g., 5%) to validate its behavior before a full rollout. Which deployment strategy should you use?",
+            options: ["A. Blue/Green update", "B. Canary deployment", "C. Rolling update", "D. Manual update"],
+            correctAnswer: "B. Canary deployment"
+        },
+        {
+            question: "39. You have an existing Compute Engine instance and want to create a custom disk image from its boot disk to create new identical instances. Which gcloud command is most appropriate for this?",
+            options: ["A. `gcloud compute images create [IMAGE_NAME] --source-disk=[DISK_NAME] --source-disk-zone=[ZONE]`", "B. `gcloud compute instances create-image [INSTANCE_NAME] --image-name=[IMAGE_NAME]`", "C. `gcloud compute disks snapshot [DISK_NAME] --snapshot-name=[SNAPSHOT_NAME]`", "D. `gcloud compute instances export [INSTANCE_NAME] --destination=[GCS_BUCKET]`"],
+            correctAnswer: "A. `gcloud compute images create [IMAGE_NAME] --source-disk=[DISK_NAME] --source-disk-zone=[ZONE]`"
+        },
+        {
+            question: "40. You need to implement a cost-effective and automated backup strategy for your Compute Engine persistent disks to protect them against accidental deletion or data corruption. Which Google Cloud solution is most appropriate?",
+            options: ["A. Copy files to Cloud Storage via rsync", "B. Create Persistent Disk snapshots", "C. Use Cloud Dataflow for backup", "D. Set up database replication"],
+            correctAnswer: "B. Create Persistent Disk snapshots"
+        },
+        {
+            question: "41. You need to restrict access to your Compute Engine instances. Only SSH traffic (port 22) should be allowed from your corporate network's IP range, and HTTP/HTTPS traffic (ports 80/443) should be allowed from anywhere on the Internet. Which Google Cloud network component allows you to implement these access rules?",
+            options: ["A. VPC Network Peering", "B. Cloud VPN", "C. Firewall rules", "D. Shared VPC"],
+            correctAnswer: "C. Firewall rules"
+        },
+        {
+            question: "42. Your company is setting up a new Google Cloud project. To ensure compliance and security, the security team requires that all new Compute Engine instances use specific approved machine images, and that certain external IP ranges are always blocked. Which Google Cloud service or feature can help enforce these organizational policies across the project or organization?",
+            options: ["A. Cloud DNS", "B. Cloud IAM", "C. Organization Policy Service", "D. Cloud Resource Manager"],
+            correctAnswer: "C. Organization Policy Service"
+        },
+        {
+            question: "43. Your application uses a Managed Instance Group (MIG) for its Compute Engine instances. You need to apply a security patch to all MIG instances without causing downtime for your application. Which update strategy should you use for the MIG?",
+            options: ["A. Blue/Green update", "B. Rolling update", "C. Canary update", "D. Manual update (one by one)"],
+            correctAnswer: "B. Rolling update"
+        },
+        {
+            question: "44. Your company uses Compute Engine instances for its web application. You need to configure a schedule to automatically start and stop these instances to save costs during off-peak hours (e.g., stop them at night and start them in the morning). Which Google Cloud service can help automate this process?",
+            options: ["A. Cloud Build", "B. Cloud Scheduler", "C. Cloud Functions", "D. Cloud Monitoring", "E. Compute Engine alone", "F. A combination of Cloud Scheduler and Cloud Functions", "G. Managed Instance Groups"],
+            correctAnswer: "F. A combination of Cloud Scheduler and Cloud Functions"
+        },
+        {
+            question: "45. You need to ensure that your Compute Engine instances are automatically restarted if they crash or become unresponsive due to an application error. Which Compute Engine feature should you enable?",
+            options: ["A. Live Migration", "B. Automatic Restart", "C. Preemptible VMs", "D. Instance Template"],
+            correctAnswer: "B. Automatic Restart"
+        },
+        {
+            question: "46. Your company wants to implement a robust disaster recovery plan for its critical application running on Compute Engine. This plan involves replicating data and application state to a different Google Cloud region to ensure business continuity in case of a regional outage. Which strategy or component is primarily associated with achieving cross-regional disaster recovery for Compute Engine?",
+            options: ["A. Load Balancer Health Checks", "B. Managed Instance Group (MIG) with Autohealing", "C. Multi-region Persistent Disks", "D. Cross-regional replication of Persistent Disk snapshots", "E. Site-to-site VPN", "F. Cloud DNS (with failover policies)"],
+            correctAnswer: "D. Cross-regional replication of Persistent Disk snapshots"
+        },
+        {
+            question: "47. Your company uses Compute Engine instances as part of a distributed application. You observe that certain requests are experiencing high latency. You need a way to visualize the flow of requests across different services and identify the specific bottlenecks causing the latency. Which Google Cloud service should you use?",
+            options: ["A. Cloud Logging", "B. Cloud Monitoring", "C. Cloud Audit Logs", "D. Cloud Trace", "E. Cloud Profiler"],
+            correctAnswer: "D. Cloud Trace"
+        },
+        {
+            question: "48. You are deploying a new web application on App Engine. Before making it generally available, you want to perform load testing to ensure it can handle the expected traffic. You need a way to generate synthetic load against your App Engine application to simulate a large number of clients. Which Google Cloud service can help you achieve this?",
+            options: ["A. Cloud Scheduler", "B. Cloud Functions", "C. Distributed Load Testing using Compute Engine (or other compute services)", "D. Cloud Trace", "E. Cloud Monitoring"],
+            correctAnswer: "C. Distributed Load Testing using Compute Engine (or other compute services)"
+        },
+        {
+            question: "49. Your security team requires a centralized solution to manage sensitive configuration data, such as API keys, database passwords, and cryptographic secrets, for your applications running on Google Cloud. This solution must provide fine-grained access control, versioning, and auditing capabilities. Which Google Cloud service should you use?",
+            options: ["A. Cloud Storage", "B. Cloud SQL", "C. Secret Manager", "D. Cloud Identity and Access Management (IAM)", "E. Environment variables (directly on VMs)"],
+            correctAnswer: "C. Secret Manager"
+        },
+        {
+            question: "50. Your organization wants to automatically provision and manage infrastructure on Google Cloud using a declarative configuration language. You need to define your infrastructure as code, track changes, and apply updates in a consistent and repeatable manner. Which Google Cloud solution is best suited for this purpose?",
+            options: ["A. Cloud Deployment Manager", "B. Terraform", "C. Cloud Build", "D. Cloud Functions"],
+            correctAnswer: "A. Cloud Deployment Manager"
+        }
+    ];
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = quizQuestions.length;
+    const quizContainer = document.getElementById('quiz-questions');
+    const currentScoreSpan = document.getElementById('current-score');
+    const answeredCountSpan = document.getElementById('answered-count');
+    const totalQuestionsSpan = document.getElementById('total-questions');
+    const submitButton = document.getElementById('submit-quiz');
+    const quizSummary = document.getElementById('quiz-summary');
+    const summaryCorrect = document.getElementById('summary-correct');
+    const summaryIncorrect = document.getElementById('summary-incorrect');
+    const summaryPercentage = document.getElementById('summary-percentage');
+    const summaryPassFail = document.getElementById('summary-pass-fail');
+
+    // Update the total questions display initially
+    totalQuestionsSpan.textContent = totalQuestions;
+
+    function renderQuiz() {
+        try {
+            if (quizQuestions.length === 0) {
+                quizContainer.innerHTML = "<p style='color:orange;'>No questions loaded. Please check the quiz data.</p>";
+                return;
+            }
+            quizQuestions.forEach((q, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `question-${index}`;
+
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = q.question;
+                questionBlock.appendChild(questionText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+
+                q.options.forEach((option, optionIndex) => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `question-${index}`;
+                    radio.value = option; // Store the full option text as value
+
+                    // Add data attributes to easily retrieve info in onAnswerSelected
+                    radio.dataset.questionIndex = index;
+                    radio.dataset.optionText = option;
+
+                    // Attach event listener for real-time scoring
+                    radio.addEventListener('change', onAnswerSelected);
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(option));
+                    optionsDiv.appendChild(label);
+                });
+
+                questionBlock.appendChild(optionsDiv);
+
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.id = `feedback-${index}`;
+                questionBlock.appendChild(feedbackDiv);
+
+                quizContainer.appendChild(questionBlock);
+            });
+        } catch (error) {
+            console.error("Error during quiz rendering:", error);
+            quizContainer.innerHTML = "<p style='color:red;'>An error occurred while loading questions. Please check the browser console for more details.</p>";
+        }
+    }
+
+    function onAnswerSelected(event) {
+        const selectedRadio = event.target;
+        const questionIndex = parseInt(selectedRadio.dataset.questionIndex);
+        const selectedOptionText = selectedRadio.dataset.optionText;
+
+        const questionBlock = document.getElementById(`question-${questionIndex}`);
+        const feedbackDiv = document.getElementById(`feedback-${questionIndex}`);
+        const optionsDiv = questionBlock.querySelector('.options');
+
+        // Check if this question has already been answered
+        if (questionBlock.classList.contains('answered')) {
+            return;
+        }
+
+        // Mark question as answered and disable its radios
+        questionBlock.classList.add('answered');
+        const radios = optionsDiv.querySelectorAll(`input[name="question-${questionIndex}"]`);
+        radios.forEach(radio => radio.disabled = true);
+
+        const questionData = quizQuestions[questionIndex];
+        let isCorrect = (selectedOptionText === questionData.correctAnswer);
+
+        if (isCorrect) {
+            score++;
+            feedbackDiv.textContent = "Correct!";
+            feedbackDiv.classList.add('correct');
+            feedbackDiv.classList.remove('incorrect');
+            selectedRadio.parentElement.classList.add('selected-correct'); // Apply class to the label of the selected radio
+        } else {
+            feedbackDiv.textContent = `Incorrect. The correct answer was: ${questionData.correctAnswer}`;
+            feedbackDiv.classList.add('incorrect');
+            feedbackDiv.classList.remove('correct');
+            selectedRadio.parentElement.classList.add('selected-incorrect'); // Apply class to the label of the selected radio
+
+            // Highlight the correct answer's label
+            optionsDiv.querySelectorAll('label').forEach(label => {
+                const labelText = label.textContent.trim();
+                if (labelText.startsWith(questionData.correctAnswer)) {
+                    label.classList.add('correct-answer-highlight');
+                }
+            });
+        }
+
+        // Update score display in the sticky header
+        answeredCount++;
+        currentScoreSpan.textContent = score;
+        answeredCountSpan.textContent = answeredCount;
+
+        // Check if all questions are answered to enable submit button
+        if (answeredCount === totalQuestions) {
+            submitButton.disabled = false;
+        }
+    }
+
+    function showQuizSummary() {
+        const incorrectAnswers = totalQuestions - score;
+        const percentage = (score / totalQuestions) * 100;
+
+        summaryCorrect.textContent = score;
+        summaryIncorrect.textContent = incorrectAnswers;
+        summaryPercentage.textContent = `${percentage.toFixed(2)}%`; // Format to 2 decimal places
+
+        summaryPassFail.classList.remove('pass', 'fail'); // Clear previous classes
+        if (percentage >= 70) {
+            summaryPassFail.textContent = "PASS";
+            summaryPassFail.classList.add('pass');
+        } else {
+            summaryPassFail.textContent = "FAIL";
+            summaryPassFail.classList.add('fail');
+        }
+
+        quizSummary.style.display = 'block'; // Show the summary section
+
+        // Scroll to the summary section
+        quizSummary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Add event listener to the submit button
+    submitButton.addEventListener('click', showQuizSummary);
+
+    // Initialize the quiz when the page loads
+    document.addEventListener('DOMContentLoaded', renderQuiz);
+</script>
+</body>
+</html>
