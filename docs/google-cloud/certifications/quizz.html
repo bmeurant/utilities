@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Quizz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+            text-align: center;
+        }
+        .quiz-selection-container {
+            text-align: center;
+            margin: 20px 0 30px 0; /* Added more vertical margin */
+        }
+        #quiz-selector {
+            font-size: 1.1em; /* Made font larger */
+            padding: 8px 12px; /* Added padding */
+            min-width: 350px; /* Gave it a minimum width */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        label[for="quiz-selector"] {
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s ease;
+        }
+        .options label:hover {
+            background-color: #e2e2e2;
+        }
+        .options input[type="radio"] {
+            margin-right: 8px;
+        }
+        .feedback {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        .score-display {
+            position: sticky;
+            top: 0;
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.2em;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            margin-bottom: 20px;
+        }
+        .score-total {
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        /* Style for options once answer is selected */
+        .answered .options label {
+            pointer-events: none; /* Prevent changing selection */
+        }
+        .answered .options label.selected-correct {
+            background-color: #c3e6cb; /* Light green for selected correct answer */
+        }
+        .answered .options label.selected-incorrect {
+            background-color: #f5c6cb; /* Light red for selected incorrect answer */
+        }
+        .answered .options label.correct-answer-highlight {
+            background-color: #d4edda; /* More vivid green for the correct answer (even if not selected) */
+            border: 1px dashed #155724;
+        }
+        .submit-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: not-allowed; /* Default to disabled state */
+            opacity: 0.6;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+        }
+        .submit-button:enabled {
+            cursor: pointer;
+            opacity: 1;
+            background-color: #218838;
+        }
+        .submit-button:enabled:hover {
+            background-color: #1e7e34;
+        }
+        .summary-section {
+            margin-top: 40px;
+            padding: 25px;
+            border: 2px solid #0056b3;
+            border-radius: 8px;
+            background-color: #e7f0fa;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
+        .summary-section h3 {
+            color: #0056b3;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .summary-details p {
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+        .summary-details .pass {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        .summary-details .fail {
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+<div class="score-display">
+    Score: <span id="current-score">0</span> / <span id="answered-count">0</span>
+    (Total questions: <span id="total-questions">0</span>)
+</div>
+<div class="container">
+    <h1 id="quiz-title">Cloud Quizz</h1>
+
+    <div class="quiz-selection-container">
+        <label for="quiz-selector">Choose a Quiz:</label>
+        <select id="quiz-selector"></select>
+    </div>
+
+    <div id="quiz-questions">
+    </div>
+
+    <button id="submit-quiz" class="submit-button" disabled>Submit Quiz</button>
+
+    <div id="quiz-summary" class="summary-section">
+        <h3>Quiz Results Summary</h3>
+        <div class="summary-details">
+            <p>Correct Answers: <span id="summary-correct">0</span></p>
+            <p>Incorrect Answers: <span id="summary-incorrect">0</span></p>
+            <p>Percentage: <span id="summary-percentage">0%</span></p>
+            <p id="summary-pass-fail" class=""></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Generated by your AI assistant.
+    </div>
+</div>
+
+<script>
+    let score = 0;
+    let answeredCount = 0;
+    let totalQuestions = 0;
+    let quizQuestions = [];
+    let allQuizData = {}; // Will be populated by the loaded script
+
+    const quizContainer = document.getElementById('quiz-questions');
+    const currentScoreSpan = document.getElementById('current-score');
+    const answeredCountSpan = document.getElementById('answered-count');
+    const totalQuestionsSpan = document.getElementById('total-questions');
+    const submitButton = document.getElementById('submit-quiz');
+    const quizSummary = document.getElementById('quiz-summary');
+    const summaryCorrect = document.getElementById('summary-correct');
+    const summaryIncorrect = document.getElementById('summary-incorrect');
+    const summaryPercentage = document.getElementById('summary-percentage');
+    const summaryPassFail = document.getElementById('summary-pass-fail');
+    const quizSelector = document.getElementById('quiz-selector');
+    const quizTitle = document.getElementById('quiz-title');
+
+    // Datasets to be listed in the dropdown.
+    // Each object contains the file name and the title to display.
+    const availableDatasets = [
+        { file: 'ace.js', title: 'Associate Cloud Engineer' }
+    ];
+
+    function populateQuizSelector() {
+        availableDatasets.forEach(dataset => {
+            const option = document.createElement('option');
+            option.value = dataset.file; // The value is the filename
+            option.textContent = dataset.title; // The displayed text is the title
+            quizSelector.appendChild(option);
+        });
+
+        quizSelector.addEventListener('change', (event) => {
+            loadDataset(event.target.value);
+        });
+
+        // Load the first dataset by default
+        if (availableDatasets.length > 0) {
+            loadDataset(availableDatasets[0].file);
+        }
+    }
+
+    function loadDataset(datasetFile) {
+        // Remove any existing script to avoid conflicts
+        const existingScript = document.getElementById('quiz-data-script');
+        if (existingScript) {
+            existingScript.remove();
+        }
+
+        // Create a new script element to load the selected dataset
+        const script = document.createElement('script');
+        script.id = 'quiz-data-script';
+        script.src = `questions-datasets/${datasetFile}`;
+        script.onload = () => {
+            // The script has loaded, now we can access the `allQuizData` variable
+            const quizNames = Object.keys(allQuizData);
+            if (quizNames.length > 0) {
+                // For simplicity, we'll load the first quiz defined in the file.
+                // This could be extended with another dropdown if a file contains multiple quizzes.
+                loadQuiz(quizNames[0]);
+            } else {
+                console.error("No quiz data found in the loaded file:", datasetFile);
+                quizContainer.innerHTML = "<p style='color:red;'>Error: Could not find any quiz data in the selected file.</p>";
+            }
+        };
+        script.onerror = () => {
+            console.error("Failed to load the quiz dataset:", datasetFile);
+            quizContainer.innerHTML = "<p style='color:red;'>Error: Failed to load the questions. Please check the file path and content.</p>";
+        };
+
+        document.body.appendChild(script);
+    }
+
+    function loadQuiz(quizName) {
+        const pageTitle = `${quizName} Quizz`;
+        quizTitle.textContent = pageTitle; // Update the main title (h1)
+        document.title = pageTitle; // Update the browser tab title
+
+        quizQuestions = allQuizData[quizName];
+        totalQuestions = quizQuestions.length;
+        resetQuiz();
+        renderQuiz();
+    }
+
+    function resetQuiz() {
+        score = 0;
+        answeredCount = 0;
+        quizContainer.innerHTML = '';
+        submitButton.disabled = true;
+        submitButton.style.display = 'block';
+        quizSummary.style.display = 'none';
+        currentScoreSpan.textContent = '0';
+        answeredCountSpan.textContent = '0';
+        totalQuestionsSpan.textContent = totalQuestions;
+    }
+
+    function renderQuiz() {
+        try {
+            if (quizQuestions.length === 0) {
+                quizContainer.innerHTML = "<p style='color:orange;'>No questions loaded. Please check the quiz data.</p>";
+                return;
+            }
+            quizQuestions.forEach((q, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+                questionBlock.id = `question-${index}`;
+
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q.question}`; // Add question number
+                questionBlock.appendChild(questionText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+
+                q.options.forEach((option, optionIndex) => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `question-${index}`;
+                    radio.value = option; // Store the full option text as value
+
+                    // Add data attributes to easily retrieve info in onAnswerSelected
+                    radio.dataset.questionIndex = index;
+                    radio.dataset.optionText = option;
+
+                    // Attach event listener for real-time scoring
+                    radio.addEventListener('change', onAnswerSelected);
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(option));
+                    optionsDiv.appendChild(label);
+                });
+
+                questionBlock.appendChild(optionsDiv);
+
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.id = `feedback-${index}`;
+                questionBlock.appendChild(feedbackDiv);
+
+                quizContainer.appendChild(questionBlock);
+            });
+        } catch (error) {
+            console.error("Error during quiz rendering:", error);
+            quizContainer.innerHTML = "<p style='color:red;'>An error occurred while loading questions. Please check the browser console for more details.</p>";
+        }
+    }
+
+    function onAnswerSelected(event) {
+        const selectedRadio = event.target;
+        const questionIndex = parseInt(selectedRadio.dataset.questionIndex);
+        const selectedOptionText = selectedRadio.dataset.optionText;
+
+        const questionBlock = document.getElementById(`question-${questionIndex}`);
+        const feedbackDiv = document.getElementById(`feedback-${questionIndex}`);
+        const optionsDiv = questionBlock.querySelector('.options');
+
+        // Check if this question has already been answered
+        if (questionBlock.classList.contains('answered')) {
+            return;
+        }
+
+        // Mark question as answered and disable its radios
+        questionBlock.classList.add('answered');
+        const radios = optionsDiv.querySelectorAll(`input[name="question-${questionIndex}"]`);
+        radios.forEach(radio => radio.disabled = true);
+
+        const questionData = quizQuestions[questionIndex];
+        let isCorrect = (selectedOptionText === questionData.correctAnswer);
+
+        if (isCorrect) {
+            score++;
+            feedbackDiv.textContent = "Correct!";
+            feedbackDiv.classList.add('correct');
+            feedbackDiv.classList.remove('incorrect');
+            selectedRadio.parentElement.classList.add('selected-correct'); // Apply class to the label of the selected radio
+        } else {
+            feedbackDiv.textContent = `Incorrect. The correct answer was: ${questionData.correctAnswer}`;
+            feedbackDiv.classList.add('incorrect');
+            feedbackDiv.classList.remove('correct');
+            selectedRadio.parentElement.classList.add('selected-incorrect'); // Apply class to the label of the selected radio
+
+            // Highlight the correct answer's label
+            optionsDiv.querySelectorAll('label').forEach(label => {
+                const labelText = label.textContent.trim();
+                if (labelText.startsWith(questionData.correctAnswer)) {
+                    label.classList.add('correct-answer-highlight');
+                }
+            });
+        }
+
+        // Update score display in the sticky header
+        answeredCount++;
+        currentScoreSpan.textContent = score;
+        answeredCountSpan.textContent = answeredCount;
+
+        // Check if all questions are answered to enable submit button
+        if (answeredCount === totalQuestions) {
+            submitButton.disabled = false;
+        }
+    }
+
+    function showQuizSummary() {
+        const incorrectAnswers = totalQuestions - score;
+        const percentage = (score / totalQuestions) * 100;
+
+        summaryCorrect.textContent = score;
+        summaryIncorrect.textContent = incorrectAnswers;
+        summaryPercentage.textContent = `${percentage.toFixed(2)}%`; // Format to 2 decimal places
+
+        summaryPassFail.classList.remove('pass', 'fail'); // Clear previous classes
+        if (percentage >= 70) {
+            summaryPassFail.textContent = "PASS";
+            summaryPassFail.classList.add('pass');
+        } else {
+            summaryPassFail.textContent = "FAIL";
+            summaryPassFail.classList.add('fail');
+        }
+
+        quizSummary.style.display = 'block'; // Show the summary section
+        submitButton.style.display = 'none'; // Hide the submit button
+
+        // Scroll to the summary section
+        quizSummary.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Add event listener to the submit button
+    submitButton.addEventListener('click', showQuizSummary);
+
+    // Initialize the quiz when the page loads
+    document.addEventListener('DOMContentLoaded', populateQuizSelector);
+</script>
+</body>
+</html>
