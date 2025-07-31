@@ -1,505 +1,526 @@
-
 allQuizData = {
     "Associate Cloud Engineer": [
         {
-            question: "Your company is setting up a new Google Cloud project for a highly sensitive application. You need to ensure that all resources deployed within this project automatically enforce data residency requirements by only allowing deployment in the europe-west1 region. Which of the following is the most effective and scalable way to enforce this policy?",
-            options: [
-                "A. Manually configure region restrictions for each service after deployment.",
-                "B. Create a custom IAM role that restricts resource creation to europe-west1.",
-                "C. Use an Organization Policy to create a 'Resource Location Restriction' constraint.",
-                "D. Configure firewall rules to block traffic from outside europe-west1."
+            "question": "Your company is setting up a new Google Cloud project for a highly sensitive application. You need to ensure that all resources deployed within this project automatically enforce data residency requirements by only allowing deployment in the europe-west1 region. Which of the following is the most effective and scalable way to enforce this policy?",
+            "options": [
+                "A. Apply an IAM condition to all users, denying resource creation outside europe-west1.",
+                "B. Configure a custom startup script on all Compute Engine instances to check their region.",
+                "C. Create an Organization Policy with the constraints/gcp.resourceLocations constraint applied to the project.",
+                "D. Set the default region for the project in the project settings."
             ],
-            correctAnswer: "C. Use an Organization Policy to create a 'Resource Location Restriction' constraint."
+            "correctAnswer": "C. Create an Organization Policy with the constraints/gcp.resourceLocations constraint applied to the project."
         },
         {
-            question: "A development team needs to deploy a containerized application to Google Cloud. They require a fully managed platform that allows rapid deployments, scales automatically based on traffic (including scaling to zero), and supports custom domains and HTTPS without manual certificate management. Which Google Cloud service is the best fit?",
-            options: [
-                "A. Compute Engine",
-                "B. Google Kubernetes Engine (GKE)",
-                "C. Cloud Run",
-                "D. App Engine Flexible Environment"
+            "question": "Your security team requires that all new Compute Engine instances must have a specific set of security tags applied automatically upon creation. These tags are critical for firewall rules and auditing. How can you ensure this requirement is met for all instances launched in a specific project?",
+            "options": [
+                "A. Include the tags in the instance template used by a Managed Instance Group.",
+                "B. Create a custom IAM role that mandates tags for instance creation.",
+                "C. Develop a Cloud Function triggered by instance creation to apply the tags.",
+                "D. Use an Organization Policy to enforce required instance tags."
             ],
-            correctAnswer: "C. Cloud Run"
+            "correctAnswer": "D. Use an Organization Policy to enforce required instance tags."
         },
         {
-            question: "You are designing a data analytics pipeline. Raw data arrives in CSV files in a Cloud Storage bucket. You need a serverless service to automatically process these files, transform them, and load them into BigQuery for analysis. Which Google Cloud service should you use to trigger the processing when new files arrive?",
-            options: [
-                "A. Cloud Dataflow",
-                "B. Cloud Functions",
-                "C. Cloud Pub/Sub",
-                "D. Cloud Composer"
+            "question": "You are creating a new Google Cloud project for your team. You want to give a new team member, john.doe@example.com, the ability to create and manage virtual machines and disks, but nothing else. Which of the following predefined IAM roles should you assign to John Doe at the project level to adhere to the principle of least privilege?",
+            "options": [
+                "A. roles/compute.admin",
+                "B. roles/compute.instanceAdmin.v1",
+                "C. roles/editor",
+                "D. roles/owner"
             ],
-            correctAnswer: "B. Cloud Functions"
+            "correctAnswer": "B. roles/compute.instanceAdmin.v1"
         },
         {
-            question: "Your application requires a highly available, relational database that supports standard SQL and automatically handles replication, patching, and backups. You prefer a fully managed service to minimize operational overhead. Which Google Cloud service meets these requirements?",
-            options: [
-                "A. Compute Engine with PostgreSQL installed",
-                "B. Cloud Spanner",
-                "C. Cloud SQL",
-                "D. Cloud Bigtable"
+            "question": "Your company has a billing account with several projects linked to it. You need to assign a new finance team member, susan.smith@example.com, the ability to view the billing information for all projects linked to this billing account, but not make any changes to the projects or the billing setup. Which IAM role should you assign to Susan?",
+            "options": [
+                "A. roles/billing.user at the project level.",
+                "B. roles/billing.viewer at the billing account level.",
+                "C. roles/billing.creator at the organization level.",
+                "D. roles/owner at the billing account level."
             ],
-            correctAnswer: "C. Cloud SQL"
+            "correctAnswer": "B. roles/billing.viewer at the billing account level."
         },
         {
-            question: "You need to migrate an existing web application running on an on-premises Linux server with a MySQL database to Google Cloud. The application architecture should remain largely unchanged, and you want to minimize refactoring. Which Google Cloud compute and database services combination would you recommend?",
-            options: [
-                "A. App Engine Standard and Cloud Firestore",
-                "B. Cloud Run and Cloud Spanner",
-                "C. Compute Engine (Linux VM) and Cloud SQL for MySQL",
-                "D. Google Kubernetes Engine and Cloud Bigtable"
+            "question": "Your company is expanding its operations and creating new departments. Each department will have its own Google Cloud projects. You need to organize these projects logically and apply specific IAM policies and Organization Policies uniformly to all projects within a department. Which Google Cloud Resource Hierarchy component should you use for each department?",
+            "options": [
+                "A. Projects",
+                "B. Folders",
+                "C. Labels",
+                "D. Resource Groups"
             ],
-            correctAnswer: "C. Compute Engine (Linux VM) and Cloud SQL for MySQL"
+            "correctAnswer": "B. Folders"
         },
         {
-            question: "Your company needs to store large archives of historical data (petabytes) that are accessed very rarely (less than once a year) but must be retained for compliance purposes. The primary goal is to minimize storage costs. Which Cloud Storage class is most appropriate?",
-            options: [
-                "A. Standard",
-                "B. Nearline",
-                "C. Coldline",
-                "D. Archive"
+            "question": "Your organization wants to restrict the creation of external IP addresses on Compute Engine instances within a specific project to enhance security. Which Organization Policy constraint should you use to enforce this?",
+            "options": [
+                "A. constraints/compute.vmExternalIpAccess",
+                "B. constraints/compute.disableExternalIp",
+                "C. constraints/compute.restrictPublicIp",
+                "D. constraints/compute.requireShieldedVm"
             ],
-            correctAnswer: "D. Archive"
+            "correctAnswer": "A. constraints/compute.vmExternalIpAccess"
         },
         {
-            question: "You are setting up a VPC network for your Google Cloud project. You want to ensure that all virtual machines in a specific subnet can access the internet, but external instances cannot initiate connections to them. Which network configuration should you use?",
-            options: [
-                "A. Apply an ingress firewall rule allowing all traffic.",
-                "B. Assign public IP addresses to all VMs and use no egress rule.",
-                "C. Use Cloud NAT (Network Address Translation) for the subnet.",
-                "D. Peer the VPC with another network that has internet access."
+            "question": "You are setting up a new service account for an application that will only read data from a specific Cloud Storage bucket named my-sensitive-data-bucket. This service account should not be able to modify or delete any data, nor should it have access to any other buckets or services. Which IAM role should you grant to the service account, and at what level?",
+            "options": [
+                "A. roles/storage.objectViewer on the my-sensitive-data-bucket bucket.",
+                "B. roles/storage.viewer on the project containing the bucket.",
+                "C. roles/viewer on the my-sensitive-data-bucket bucket.",
+                "D. roles/storage.admin on the my-sensitive-data-bucket bucket."
             ],
-            correctAnswer: "C. Use Cloud NAT (Network Address Translation) for the subnet."
+            "correctAnswer": "A. roles/storage.objectViewer on the my-sensitive-data-bucket bucket."
         },
         {
-            question: "A new employee joins your team and needs permission to view all resources in a Google Cloud project but should not be able to modify or delete anything. Which IAM predefined role should you assign to this employee at the project level?",
-            options: [
-                "A. Editor",
-                "B. Viewer",
-                "C. Owner",
-                "D. Project IAM Admin"
+            "question": "Your team needs to upload large files (several terabytes) to Cloud Storage from an on-premises server. These uploads are critical and must be highly reliable, even over unstable network connections. You also want to resume interrupted uploads without restarting from scratch. Which tool is most suitable for this task?",
+            "options": [
+                "A. gsutil cp",
+                "B. gsutil rsync",
+                "C. gsutil mv",
+                "D. gcloud storage cp (or gcloud storage rsync)",
+                "E. Storage Transfer Service",
+                "F. gsutil with resumable uploads (default behavior for large files)"
             ],
-            correctAnswer: "B. Viewer"
+            "correctAnswer": "F. gsutil with resumable uploads (default behavior for large files)"
         },
         {
-            question: "You need to transfer 50 TB of data from an on-premises data center to Cloud Storage. Your internet connection is slow and unreliable. What is the most efficient and reliable method to perform this large-scale data transfer to Google Cloud?",
-            options: [
-                "A. Use `gsutil cp` over the internet.",
-                "B. Send the data via a Cloud VPN connection.",
-                "C. Order a Transfer Appliance from Google.",
-                "D. Use Storage Transfer Service for online migration."
-            ],
-            correctAnswer: "C. Order a Transfer Appliance from Google."
-        },
-        {
-            question: "Your company requires a dedicated, private, and high-bandwidth connection between its on-premises data center and Google Cloud VPC network, ensuring data does not traverse the public internet. Which Google Cloud networking product is designed for this purpose?",
-            options: [
+            "question": "You are setting up a new Google Cloud project and need to connect it to your existing on-premises network securely and with high bandwidth. You require a dedicated, private connection that bypasses the public internet. Which Google Cloud networking service should you use?",
+            "options": [
                 "A. Cloud VPN",
-                "B. Shared VPC",
-                "C. Dedicated Interconnect",
+                "B. Cloud Interconnect (Dedicated Interconnect)",
+                "C. Peering (VPC Network Peering)",
                 "D. Cloud CDN"
             ],
-            correctAnswer: "C. Dedicated Interconnect"
+            "correctAnswer": "B. Cloud Interconnect (Dedicated Interconnect)"
         },
         {
-            question: "You have a web application running on Compute Engine instances that are behind a global external HTTP(S) Load Balancer. You need to ensure that the load balancer only sends traffic to instances that are healthy and responsive. Which feature of the load balancer accomplishes this?",
-            options: [
-                "A. Session affinity",
-                "B. Autoscaling",
-                "C. Health checks",
-                "D. CDN integration"
+            "question": "You are configuring a new project for a development team. You want to give them the ability to deploy applications to App Engine and manage cron jobs, but you also want to ensure they cannot inadvertently delete App Engine versions or modify network settings. Which of the following predefined IAM roles should you assign to the development team at the project level?",
+            "options": [
+                "A. roles/appengine.admin",
+                "B. roles/appengine.deployer",
+                "C. roles/appengine.serviceAdmin",
+                "D. roles/editor"
             ],
-            correctAnswer: "C. Health checks"
+            "correctAnswer": "B. roles/appengine.deployer"
         },
         {
-            question: "Your organization has multiple Google Cloud projects, and you want to centralize network management, including IP address allocation and firewall rules, across these projects. Which Google Cloud networking feature should you implement?",
-            options: [
-                "A. VPC Network Peering",
-                "B. Shared VPC",
-                "C. Cloud VPN",
-                "D. Cloud Router"
-            ],
-            correctAnswer: "B. Shared VPC"
-        },
-        {
-            question: "You are deploying a highly available application using Compute Engine instances. You need to ensure that if an instance becomes unresponsive, it is automatically replaced. Which Compute Engine feature or service enables this auto-healing capability?",
-            options: [
-                "A. Preemptible VMs",
-                "B. Custom machine types",
-                "C. Managed Instance Groups (MIGs) with health checks",
-                "D. Sole-tenant nodes"
-            ],
-            correctAnswer: "C. Managed Instance Groups (MIGs) with health checks"
-        },
-        {
-            question: "A new microservice needs to be deployed that processes messages from a Pub/Sub topic. The service should be highly scalable, fully managed, and only consume resources when messages are available. Which Google Cloud compute service is best suited for this event-driven architecture?",
-            options: [
-                "A. Compute Engine",
-                "B. App Engine Flexible Environment",
-                "C. Cloud Functions",
-                "D. Google Kubernetes Engine (GKE)"
-            ],
-            correctAnswer: "C. Cloud Functions"
-        },
-        {
-            question: "You are building an e-commerce application that requires a database with strong consistency, high availability, and global scalability, capable of handling millions of transactions per second. Your data is relational, and you need SQL queries. Which Google Cloud database service is designed for this use case?",
-            options: [
+            "question": "Your company is developing a new mobile application that requires a NoSQL database. The database must be highly scalable globally, support complex queries across multiple fields, and provide low-latency access for millions of concurrent users. Which Google Cloud database service is the most suitable for this scenario?",
+            "options": [
                 "A. Cloud SQL",
-                "B. Cloud Firestore",
-                "C. Cloud Spanner",
+                "B. Cloud Spanner",
+                "C. Firestore in Native Mode",
                 "D. Cloud Bigtable"
             ],
-            correctAnswer: "C. Cloud Spanner"
+            "correctAnswer": "C. Firestore in Native Mode"
         },
         {
-            question: "You need to analyze vast amounts of semi-structured data (e.g., JSON logs) in a serverless and cost-effective manner using standard SQL queries. The data volume is in the petabytes, and you don't want to manage any infrastructure. Which Google Cloud service should you choose?",
-            options: [
-                "A. Cloud SQL",
-                "B. Cloud Bigtable",
-                "C. BigQuery",
-                "D. Cloud Storage"
+            "question": "Your company is migrating a legacy monolithic application to Google Cloud. The application runs on a Linux VM and uses a traditional file system that requires a POSIX-compliant file interface and shared access across multiple Compute Engine instances simultaneously. Which Google Cloud storage service is the most appropriate for this requirement?",
+            "options": [
+                "A. Cloud Storage (multi-regional bucket)",
+                "B. Filestore (Basic or Standard tier)",
+                "C. Persistent Disk (attached in read-write mode to a single VM)",
+                "D. Cloud SQL"
             ],
-            correctAnswer: "C. BigQuery"
+            "correctAnswer": "B. Filestore (Basic or Standard tier)"
         },
         {
-            question: "Your application is experiencing performance issues due to slow database queries. You want to implement a caching layer to reduce the load on your primary database and speed up data retrieval. Which Google Cloud service provides a fully managed in-memory data store for caching?",
-            options: [
-                "A. Cloud Storage",
-                "B. Cloud SQL",
-                "C. Memorystore",
+            "question": "Your company needs to ingest a massive amount of unstructured data (e.g., images, videos, log files) from various sources. This data needs to be stored durably and made available for later processing and analysis by multiple applications. You also need to keep the costs low for infrequently accessed data. Which Google Cloud storage service is the most appropriate for this requirement?",
+            "options": [
+                "A. Cloud Storage (with lifecycle management)",
+                "B. Persistent Disk (Standard)",
+                "C. Cloud SQL (PostgreSQL)",
+                "D. Firestore (Native mode)"
+            ],
+            "correctAnswer": "A. Cloud Storage (with lifecycle management)"
+        },
+        {
+            "question": "You are designing a solution to collect and process real-time events from IoT devices. These events arrive in high volume and velocity, and you need a highly scalable and durable messaging service to decouple the ingestion from the processing. Which Google Cloud service should you use to ingest these events?",
+            "options": [
+                "A. Cloud Pub/Sub",
+                "B. Cloud Tasks",
+                "C. Cloud Storage",
+                "D. Cloud SQL"
+            ],
+            "correctAnswer": "A. Cloud Pub/Sub"
+        },
+        {
+            "question": "Your company is migrating an existing application that uses Apache Kafka for real-time stream processing. You want to minimize code changes while leveraging a fully managed, scalable service on Google Cloud. Which Google Cloud service would be the best alternative to Apache Kafka for this migration?",
+            "options": [
+                "A. Cloud Pub/Sub",
+                "B. Dataflow",
+                "C. Dataproc (with Kafka installed)",
                 "D. Cloud Bigtable"
             ],
-            correctAnswer: "C. Memorystore"
+            "correctAnswer": "A. Cloud Pub/Sub"
         },
         {
-            question: "You need to collect logs from various sources across your Google Cloud environment (Compute Engine, App Engine, Cloud Functions) and centralize them for analysis, search, and export. Which Google Cloud service should you use?",
-            options: [
-                "A. Cloud Monitoring",
-                "B. Cloud Trace",
-                "C. Cloud Audit Logs",
-                "D. Cloud Logging"
+            "question": "Your application requires a highly available and highly durable key-value store for session management, user preferences, and frequently accessed small data. Latency is critical. Which Google Cloud service should you choose?",
+            "options": [
+                "A. Cloud SQL",
+                "B. Cloud Storage",
+                "C. Memorystore for Redis",
+                "D. Cloud Bigtable",
+                "E. Firestore"
             ],
-            correctAnswer: "D. Cloud Logging"
+            "correctAnswer": "C. Memorystore for Redis"
         },
         {
-            question: "Your team wants to implement continuous deployment for your Google Kubernetes Engine (GKE) applications. You need a service that can automatically build container images from source code, store them, and deploy them to GKE upon code changes. Which Google Cloud services would be part of this CI/CD pipeline?",
-            options: [
-                "A. Cloud Build, Container Registry, GKE",
-                "B. Cloud Functions, Cloud SQL, Cloud Storage",
-                "C. Cloud Dataflow, BigQuery, Looker Studio",
-                "D. Cloud CDN, Cloud Load Balancing, Cloud Armor"
-            ],
-            correctAnswer: "A. Cloud Build, Container Registry, GKE"
-        },
-        {
-            question: "You need to monitor the performance of your Compute Engine instances, track CPU utilization, memory usage, and network traffic, and set up custom dashboards and alerts. Which Google Cloud service is designed for this purpose?",
-            options: [
-                "A. Cloud Logging",
-                "B. Cloud Trace",
-                "C. Cloud Monitoring",
-                "D. Cloud Audit Logs"
-            ],
-            correctAnswer: "C. Cloud Monitoring"
-        },
-        {
-            question: "Your company wants to migrate an existing Hadoop cluster from on-premises to a fully managed, scalable service on Google Cloud. You need to run Apache Spark and Hadoop MapReduce jobs without managing individual servers. Which Google Cloud service should you use?",
-            options: [
-                "A. Compute Engine",
-                "B. Cloud Dataflow",
-                "C. Dataproc",
-                "D. BigQuery"
-            ],
-            correctAnswer: "C. Dataproc"
-        },
-        {
-            question: "You need to grant a service account the minimum necessary permissions to read objects from a specific Cloud Storage bucket. Which predefined IAM role should you assign to the service account?",
-            options: [
-                "A. roles/storage.admin",
-                "B. roles/storage.objectViewer",
-                "C. roles/storage.objectCreator",
-                "D. roles/viewer"
-            ],
-            correctAnswer: "B. roles/storage.objectViewer"
-        },
-        {
-            question: "You've deployed a new version of your web application on App Engine. You want to test this new version with a small percentage of your users (e.g., 5%) before rolling it out to everyone. Which App Engine feature allows you to control traffic distribution between different versions?",
-            options: [
-                "A. Instance scaling settings",
-                "B. Traffic splitting",
-                "C. Firewall rules",
-                "D. Health checks"
-            ],
-            correctAnswer: "B. Traffic splitting"
-        },
-        {
-            question: "Your team needs to securely store sensitive API keys and database credentials for your application. These secrets need to be versioned, have fine-grained access control, and be auditable. Which Google Cloud service is designed for managing secrets?",
-            options: [
-                "A. Cloud Storage",
-                "B. Cloud Key Management Service (KMS)",
-                "C. Secret Manager",
-                "D. Environment variables on VMs"
-            ],
-            correctAnswer: "C. Secret Manager"
-        },
-        {
-            question: "You are responsible for ensuring your Google Cloud environment is compliant with industry standards. You need to review all administrative activities and data access events across your projects to detect suspicious behavior. Which Google Cloud service provides these audit logs?",
-            options: [
-                "A. Cloud Logging",
-                "B. Cloud Monitoring",
-                "C. Cloud Audit Logs",
-                "D. VPC Flow Logs"
-            ],
-            correctAnswer: "C. Cloud Audit Logs"
-        },
-        {
-            question: "Your organization needs to create a custom VPC network that spans multiple regions and has specific subnet IP ranges for different environments (e.g., development, staging, production). Which type of VPC network should you create?",
-            options: [
-                "A. Auto mode network",
-                "B. Default network",
-                "C. Custom mode network",
-                "D. Legacy network"
-            ],
-            correctAnswer: "C. Custom mode network"
-        },
-        {
-            question: "You want to provision and manage your Google Cloud infrastructure using declarative configuration files rather than manual console operations or imperative scripts. Which Google Cloud infrastructure as code service is the native solution for this?",
-            options: [
-                "A. Terraform",
-                "B. Cloud Build",
-                "C. Cloud Deployment Manager",
-                "D. Chef/Puppet"
-            ],
-            correctAnswer: "C. Cloud Deployment Manager"
-        },
-        {
-            question: "An application is designed to store user-generated content (images, videos) that needs to be accessible globally with high durability and availability. The content is accessed frequently. Which Google Cloud storage service is ideal for this use case?",
-            options: [
-                "A. Persistent Disk",
-                "B. Cloud SQL",
-                "C. Cloud Storage (Standard storage class)",
-                "D. Filestore"
-            ],
-            correctAnswer: "C. Cloud Storage (Standard storage class)"
-        },
-        {
-            question: "You need to process large batches of data (terabytes) using a serverless, unified programming model (Apache Beam). The processing should be fully managed, automatically scale, and handle failures gracefully. Which Google Cloud service is best suited?",
-            options: [
-                "A. Dataproc",
-                "B. Cloud Functions",
-                "C. Cloud Dataflow",
-                "D. Compute Engine"
-            ],
-            correctAnswer: "C. Cloud Dataflow"
-        },
-        {
-            question: "Your Compute Engine instances need to securely and privately access Google APIs (like Cloud Storage or BigQuery) without using external IP addresses or traversing the public internet. Which Google Cloud networking feature enables this?",
-            options: [
-                "A. Cloud VPN",
-                "B. Cloud NAT",
-                "C. Private Google Access",
-                "D. VPC Network Peering"
-            ],
-            correctAnswer: "C. Private Google Access"
-        },
-        {
-            question: "You are troubleshooting a latency issue in your microservices application. You need to visualize the end-to-end flow of requests across different services, identify bottlenecks, and see where time is being spent. Which Google Cloud service provides this capability?",
-            options: [
-                "A. Cloud Logging",
-                "B. Cloud Monitoring",
-                "C. Cloud Trace",
-                "D. Cloud Profiler"
-            ],
-            correctAnswer: "C. Cloud Trace"
-        },
-        {
-            question: "Your company wants to create a shared file system that can be simultaneously mounted by multiple Compute Engine instances for use cases like shared storage for content management systems or developer home directories. Which Google Cloud service provides managed NFS file storage?",
-            options: [
-                "A. Cloud Storage",
-                "B. Persistent Disk",
+            "question": "You are planning a new application that will use App Engine. You need to store user-uploaded files, such as profile pictures and documents. These files will be accessed directly by users via unique URLs and occasionally updated. You also want to ensure high availability and global accessibility for these files. Which Google Cloud storage service should you use?",
+            "options": [
+                "A. Cloud SQL",
+                "B. Cloud Storage",
                 "C. Filestore",
-                "D. Cloud Memorystore"
+                "D. Persistent Disk"
             ],
-            correctAnswer: "C. Filestore"
+            "correctAnswer": "B. Cloud Storage"
         },
         {
-            question: "You need to create an SSH key pair to connect to a new Compute Engine instance. What is the most common and recommended command-line tool to generate this key pair on a Linux/macOS machine?",
-            options: [
-                "A. `gcloud compute ssh`",
-                "B. `ssh-keygen`",
-                "C. `openssl genrsa`",
-                "D. `gcloud auth login`"
+            "question": "You need to deploy a highly available web application that uses a backend PostgreSQL database. The application requires automatic failover for the database in case of an outage and automatic patching for maintenance. You want to minimize operational overhead. Which Google Cloud database service should you choose?",
+            "options": [
+                "A. Compute Engine with PostgreSQL installed manually",
+                "B. Cloud SQL for PostgreSQL",
+                "C. Cloud Spanner",
+                "D. Bare Metal Solution for PostgreSQL"
             ],
-            correctAnswer: "B. `ssh-keygen`"
+            "correctAnswer": "B. Cloud SQL for PostgreSQL"
         },
         {
-            question: "Your team wants to deploy a stateless web application that needs to scale very rapidly and cost-effectively from zero instances to handle spikes in traffic. You prefer to package your application as a Docker container. Which Google Cloud service is the best fit?",
-            options: [
+            "question": "You are designing a secure network for your production environment on Google Cloud. You need to ensure that your Compute Engine instances in a specific subnet (prod-subnet) can only communicate with other instances within the same subnet and with a managed database service (Cloud SQL) in a different subnet (db-subnet), but not with the internet. What is the most effective combination of VPC Firewall Rules and Private IP configurations to achieve this?",
+            "options": [
+                "A. Use an instance with an external IP address and set up egress firewall rules.",
+                "B. Ensure instances have only internal IP addresses and configure ingress/egress firewall rules between prod-subnet and db-subnet.",
+                "C. Use Shared VPC and configure firewall rules across projects.",
+                "D. Assign a public IP to instances in prod-subnet and restrict traffic with Network Tags."
+            ],
+            "correctAnswer": "B. Ensure instances have only internal IP addresses and configure ingress/egress firewall rules between prod-subnet and db-subnet."
+        },
+        {
+            "question": "You are designing a data analytics solution. You need a data warehouse that can store petabytes of data, execute complex SQL queries, and handle massive analytical workloads without requiring you to manage any infrastructure. Which Google Cloud service should you choose?",
+            "options": [
+                "A. Cloud SQL",
+                "B. BigQuery",
+                "C. Cloud Bigtable",
+                "D. Dataproc"
+            ],
+            "correctAnswer": "B. BigQuery"
+        },
+        {
+            "question": "Your company is developing a new serverless backend for a mobile application. The backend needs to execute short-lived, event-driven functions in response to HTTP requests and events from other Google Cloud services (e.g., new file uploads to Cloud Storage, messages in Pub/Sub). You want to pay only for the compute time consumed. Which Google Cloud service should you choose?",
+            "options": [
                 "A. Compute Engine",
-                "B. App Engine Standard",
-                "C. Google Kubernetes Engine (GKE)",
+                "B. App Engine Standard environment",
+                "C. Cloud Functions",
                 "D. Cloud Run"
             ],
-            correctAnswer: "D. Cloud Run"
+            "correctAnswer": "C. Cloud Functions"
         },
         {
-            question: "You need to schedule a daily batch job to run a Python script on a Compute Engine instance at 2 AM every day. The job should start the instance, run the script, and then stop the instance. Which Google Cloud services can be used in combination to achieve this automation?",
-            options: [
-                "A. Cloud Logging and Cloud Monitoring",
-                "B. Cloud Scheduler and Cloud Functions",
-                "C. Cloud Build and Container Registry",
-                "D. Dataproc and BigQuery"
+            "question": "Your company wants to deploy a new microservices-based application. Each microservice will be packaged as a Docker container. You need a platform that offers automatic scaling, load balancing, and allows you to use custom runtimes and dependencies without managing the underlying servers. Which Google Cloud service is the most suitable?",
+            "options": [
+                "A. Compute Engine",
+                "B. App Engine Flexible environment",
+                "C. Cloud Functions",
+                "D. Cloud Run",
+                "E. Google Kubernetes Engine (GKE)"
             ],
-            correctAnswer: "B. Cloud Scheduler and Cloud Functions"
+            "correctAnswer": "D. Cloud Run"
         },
         {
-            question: "A new security policy requires that all external HTTP(S) traffic to your web application, which is behind a Google Cloud Load Balancer, must be inspected for common web vulnerabilities (e.g., SQL injection, cross-site scripting). Which Google Cloud service provides Web Application Firewall (WAF) capabilities for this purpose?",
-            options: [
-                "A. Cloud VPN",
-                "B. Cloud Armor",
-                "C. Cloud DNS",
-                "D. Cloud CDN"
+            "question": "Your company runs a legacy application on a Compute Engine instance that frequently generates large log files (several GB each). These log files need to be analyzed by a separate batch process running daily. You want a cost-effective solution for storing these logs long-term, and the batch process requires direct file access (not object access). Which Google Cloud storage service should you use?",
+            "options": [
+                "A. Cloud Storage (Standard class)",
+                "B. Persistent Disk (Standard)",
+                "C. Cloud SQL",
+                "D. Filestore (Basic SSD)",
+                "E. Network File System (NFS) server on a Compute Engine instance",
+                "F. Cloud Logging (Export to Cloud Storage)"
             ],
-            correctAnswer: "B. Cloud Armor"
+            "correctAnswer": "D. Filestore (Basic SSD)"
         },
         {
-            question: "You want to implement a disaster recovery plan for your critical Compute Engine application. This plan includes creating automated, scheduled backups of your persistent disks that are stored in a different region. Which Compute Engine feature enables this?",
-            options: [
-                "A. Live Migration",
+            "question": "You are deploying an application to Google Cloud that will run on Compute Engine. This application needs to access secret API keys and database credentials securely. You want to store these secrets centrally and ensure that only authorized instances can access them, with versioning and auditing capabilities. Which Google Cloud service should you use?",
+            "options": [
+                "A. Cloud Storage (private bucket)",
+                "B. Environment variables on the Compute Engine instances",
+                "C. Secret Manager",
+                "D. Metadata server on Compute Engine instances"
+            ],
+            "correctAnswer": "C. Secret Manager"
+        },
+        {
+            "question": "You need to deploy a new web application to Google Cloud. The application is packaged as a Docker container. You want a fully managed service that can scale down to zero when there is no traffic to minimize costs, and scale up quickly when traffic increases. Which Google Cloud service should you use for deployment?",
+            "options": [
+                "A. Compute Engine",
+                "B. App Engine Standard environment",
+                "C. Cloud Functions",
+                "D. Cloud Run",
+                "E. Google Kubernetes Engine (GKE)"
+            ],
+            "correctAnswer": "D. Cloud Run"
+        },
+        {
+            "question": "You are tasked with deploying a new virtual machine to Compute Engine using the gcloud command-line tool. The VM needs to be in the us-central1-a zone, use the e2-medium machine type, and run a Debian 11 image. Which gcloud command should you use?",
+            "options": [
+                "A. gcloud compute instances create my-vm --zone=us-central1-a --machine-type=e2-medium --image=debian-cloud --image-project=debian-cloud-11",
+                "B. gcloud compute instances create my-vm --zone=us-central1-a --machine-type=e2-medium --image-family=debian-11 --image-project=debian-cloud",
+                "C. gcloud compute create-instance my-vm --zone=us-central1-a --machine-type=e2-medium --image=debian-11",
+                "D. gcloud compute instance create my-vm --zone=us-central1-a --type=e2-medium --image-name=debian-11"
+            ],
+            "correctAnswer": "B. gcloud compute instances create my-vm --zone=us-central1-a --machine-type=e2-medium --image-family=debian-11 --image-project=debian-cloud"
+        },
+        {
+            "question": "You have a Docker image for your web application stored in Artifact Registry. You need to deploy this image to Cloud Run. Which gcloud command should you use to deploy the service, assuming it's a new service named my-web-app and the image is us-central1-docker.pkg.dev/my-project/my-repo/my-app-image:latest?",
+            "options": [
+                "A. gcloud run deploy my-web-app --image=us-central1-docker.pkg.dev/my-project/my-repo/my-app-image:latest --platform=managed --region=us-central1",
+                "B. gcloud app deploy my-web-app --image=us-central1-docker.pkg.dev/my-project/my-repo/my-app-image:latest --service=my-web-app",
+                "C. gcloud compute instances create-from-container my-web-app --image=us-central1-docker.pkg.dev/my-project/my-repo/my-app-image:latest",
+                "D. gcloud container images deploy my-web-app --image=us-central1-docker.pkg.dev/my-project/my-repo/my-app-image:latest"
+            ],
+            "correctAnswer": "A. gcloud run deploy my-web-app --image=us-central1-docker.pkg.dev/my-project/my-repo/my-app-image:latest --platform=managed --region=us-central1"
+        },
+        {
+            "question": "You are deploying a web application that needs to receive traffic from the internet and distribute it across multiple Compute Engine instances in different regions for high availability and low latency. You also need to terminate SSL/TLS at the load balancer. Which Google Cloud load balancing service should you choose?",
+            "options": [
+                "A. Internal TCP/UDP Load Balancing",
+                "B. Internal HTTP(S) Load Balancing",
+                "C. External HTTP(S) Load Balancing",
+                "D. Network Load Balancing (External TCP/UDP)"
+            ],
+            "correctAnswer": "C. External HTTP(S) Load Balancing"
+        },
+        {
+            "question": "You need to configure a custom domain (www.example.com) for your web application deployed on App Engine. Which DNS record type and value should you configure in your domain registrar's DNS settings to point your domain to your App Engine application?",
+            "options": [
+                "A. CNAME record pointing to ghs.googlehosted.com",
+                "B. A record pointing to a specific IP address provided by App Engine",
+                "C. MX record pointing to ghs.googlehosted.com",
+                "D. TXT record containing a verification string"
+            ],
+            "correctAnswer": "A. CNAME record pointing to ghs.googlehosted.com"
+        },
+        {
+            "question": "Your development team frequently creates and deletes Compute Engine instances for testing purposes. You want to ensure that these instances are automatically deleted after a certain period (e.g., 24 hours) to avoid incurring unnecessary costs. Which Google Cloud feature or service can help you automate this cleanup?",
+            "options": [
+                "A. Instance Templates",
                 "B. Managed Instance Groups",
-                "C. Persistent Disk snapshots",
-                "D. Custom images"
+                "C. Cloud Scheduler combined with Cloud Functions (or gcloud scripts)",
+                "D. Preemptible VMs"
             ],
-            correctAnswer: "C. Persistent Disk snapshots"
+            "correctAnswer": "C. Cloud Scheduler combined with Cloud Functions (or gcloud scripts)"
         },
         {
-            question: "Your application needs to publish messages to a distributed, scalable messaging service that decouples senders and receivers. Multiple subscribers need to receive copies of the same messages. Which Google Cloud service is designed for this asynchronous messaging?",
-            options: [
-                "A. Cloud Tasks",
-                "B. Cloud Pub/Sub",
-                "C. Cloud Queues",
+            "question": "Your company wants to implement a robust CI/CD pipeline for its microservices. You need a fully managed service that can automatically build Docker images from source code, store them, and then deploy them to a container orchestration platform. Which Google Cloud services should you primarily integrate for this pipeline?",
+            "options": [
+                "A. Cloud Source Repositories, Compute Engine, and App Engine",
+                "B. Cloud Build, Artifact Registry, and Google Kubernetes Engine (GKE)",
+                "C. Cloud Composer, Cloud Storage, and Cloud Functions",
+                "D. Git, Persistent Disk, and Cloud Run"
+            ],
+            "correctAnswer": "B. Cloud Build, Artifact Registry, and Google Kubernetes Engine (GKE)"
+        },
+        {
+            "question": "Your company is migrating an on-premises batch processing job that runs daily. The job is currently implemented as a Python script that processes large files (terabytes) and writes results to a database. You need to run this job on Google Cloud as a managed service, without managing servers, and optimize for cost-effectiveness for batch workloads. Which Google Cloud service is the most suitable?",
+            "options": [
+                "A. Compute Engine",
+                "B. App Engine Flexible environment",
+                "C. Cloud Functions",
+                "D. Dataflow",
+                "E. Dataproc"
+            ],
+            "correctAnswer": "D. Dataflow"
+        },
+        {
+            "question": "Your company is developing a machine learning model. You need a fully managed service that allows you to train your model using custom code, deploy it as an API endpoint, and manage its lifecycle (versioning, monitoring). Which Google Cloud service is the most suitable for this?",
+            "options": [
+                "A. Compute Engine",
+                "B. BigQuery ML",
+                "C. Vertex AI",
+                "D. Dataproc",
+                "E. Cloud Functions"
+            ],
+            "correctAnswer": "C. Vertex AI"
+        },
+        {
+            "question": "You are responsible for monitoring the performance and health of your Compute Engine instances. You need to collect metrics such as CPU utilization, network traffic, and disk I/O, and create custom dashboards and alerts based on these metrics. Which Google Cloud service should you use?",
+            "options": [
+                "A. Cloud Audit Logs",
+                "B. Cloud Trace",
+                "C. Cloud Monitoring",
+                "D. Cloud Logging",
+                "E. Cloud Build",
+                "F. Cloud Profiler"
+            ],
+            "correctAnswer": "C. Cloud Monitoring"
+        },
+        {
+            "question": "Your application writes logs to stdout and stderr on your Compute Engine instances. You need to collect these logs centrally for analysis and troubleshooting. Which Google Cloud service will automatically collect these logs?",
+            "options": [
+                "A. Cloud Audit Logs",
+                "B. Cloud Trace",
+                "C. Cloud Monitoring",
+                "D. Cloud Logging",
+                "E. Cloud Build",
+                "F. Cloud Profiler"
+            ],
+            "correctAnswer": "D. Cloud Logging"
+        },
+        {
+            "question": "Your security team requires that all API calls and administrative actions performed on your Google Cloud project are recorded for auditing and compliance purposes, including who performed the action, when, and from where. Which Google Cloud service provides this functionality?",
+            "options": [
+                "A. Cloud Logging",
+                "B. Cloud Monitoring",
+                "C. Cloud Audit Logs",
+                "D. Cloud Identity"
+            ],
+            "correctAnswer": "C. Cloud Audit Logs"
+        },
+        {
+            "question": "Your application instances are deployed across multiple zones in a region to achieve high availability. You need to ensure that traffic is automatically distributed among these instances and that unhealthy instances are removed from rotation. Which Google Cloud service provides this functionality?",
+            "options": [
+                "A. Cloud DNS",
+                "B. Compute Engine (sole-tenant nodes)",
+                "C. External HTTP(S) Load Balancing",
+                "D. Managed Instance Group (MIG) with Autohealing",
+                "E. Cloud Armor"
+            ],
+            "correctAnswer": "C. External HTTP(S) Load Balancing"
+        },
+        {
+            "question": "You are developing a new feature for your application and want to test it in a production-like environment with a small percentage of live user traffic before a full rollout. You need to redirect 5% of your production traffic to the new version of your application. Which deployment strategy should you use, and which Google Cloud service can help implement this?",
+            "options": [
+                "A. Blue/Green Deployment with Compute Engine",
+                "B. Canary Deployment with Cloud Run (or App Engine/GKE)",
+                "C. Rolling Update with Managed Instance Groups",
+                "D. A/B Testing with Cloud CDN"
+            ],
+            "correctAnswer": "B. Canary Deployment with Cloud Run (or App Engine/GKE)"
+        },
+        {
+            "question": "You want to automate the process of creating Compute Engine machine images from existing running instances to simplify your disaster recovery and instance provisioning processes. Which gcloud command should you use to create an image named my-custom-image from an instance named my-source-instance located in us-central1-a?",
+            "options": [
+                "A. gcloud compute images create my-custom-image --source-disk=my-source-instance --source-disk-zone=us-central1-a",
+                "B. gcloud compute instances create-image my-custom-image --source-instance=my-source-instance --zone=us-central1-a",
+                "C. gcloud compute snapshots create my-custom-image --source-disk=my-source-instance-disk --source-disk-zone=us-central1-a",
+                "D. gcloud compute disks create-image my-custom-image --source-disk=my-source-instance-disk --source-disk-zone=us-central1-a"
+            ],
+            "correctAnswer": "A. gcloud compute images create my-custom-image --source-disk=my-source-instance --source-disk-zone=us-central1-a"
+        },
+        {
+            "question": "Your company uses Compute Engine instances to run critical workloads. You need to configure a daily backup strategy for the persistent disks attached to these instances. The backups should be stored cost-effectively and be easy to restore in case of data loss. Which Google Cloud service or feature should you use?",
+            "options": [
+                "A. Cloud Storage (Coldline)",
+                "B. Persistent Disk snapshots",
+                "C. Cloud SQL backups",
+                "D. Cloud Archival Storage"
+            ],
+            "correctAnswer": "B. Persistent Disk snapshots"
+        },
+        {
+            "question": "Your company wants to restrict access to your Compute Engine instances based on IP address ranges and protocols. For example, you want to allow SSH access only from your corporate network, and HTTP/HTTPS traffic only from anywhere on the internet. Which Google Cloud networking component should you use to implement these rules?",
+            "options": [
+                "A. VPC Network Peering",
+                "B. Cloud VPN",
+                "C. Firewall rules",
+                "D. Shared VPC"
+            ],
+            "correctAnswer": "C. Firewall rules"
+        },
+        {
+            "question": "Your company is setting up a new Google Cloud project. To ensure compliance and security, the security team mandates that all new Compute Engine instances must use specific machine images approved by the organization, and that certain external IP address ranges are always blocked. Which Google Cloud service or feature can help enforce these organizational policies across the entire project or organization?",
+            "options": [
+                "A. Cloud DNS",
+                "B. Cloud IAM",
+                "C. Organization Policy Service",
+                "D. Cloud Resource Manager"
+            ],
+            "correctAnswer": "C. Organization Policy Service"
+        },
+        {
+            "question": "Your application uses a managed instance group (MIG) for its Compute Engine instances. You need to apply a security patch to all instances in the MIG without causing downtime to your application. Which update strategy should you use for the MIG?",
+            "options": [
+                "A. Blue/Green update",
+                "B. Rolling update",
+                "C. Canary update",
+                "D. Manual update (one by one)"
+            ],
+            "correctAnswer": "B. Rolling update"
+        },
+        {
+            "question": "Your company uses Compute Engine instances for its web application. You need to configure a schedule for automatically starting and stopping these instances to save costs during off-peak hours (e.g., stopping them at night and starting them in the morning). Which Google Cloud service can help you automate this process?",
+            "options": [
+                "A. Cloud Build",
+                "B. Cloud Scheduler",
+                "C. Cloud Functions",
+                "D. Cloud Monitoring",
+                "E. Compute Engine alone",
+                "F. A combination of Cloud Scheduler and Cloud Functions",
+                "G. Managed Instance Groups"
+            ],
+            "correctAnswer": "F. A combination of Cloud Scheduler and Cloud Functions"
+        },
+        {
+            "question": "You need to ensure that your Compute Engine instances are automatically restarted if they crash or become unresponsive due to an application error. Which Compute Engine feature should you enable?",
+            "options": [
+                "A. Live Migration",
+                "B. Automatic Restart",
+                "C. Preemptible VMs",
+                "D. Instance Template"
+            ],
+            "correctAnswer": "B. Automatic Restart"
+        },
+        {
+            "question": "Your company wants to implement a robust disaster recovery plan for its critical application running on Compute Engine. This plan involves replicating data and application state to a different Google Cloud region to ensure business continuity in case of a regional outage. Which strategy or component is primarily associated with achieving cross-regional disaster recovery for Compute Engine?",
+            "options": [
+                "A. Load Balancer Health Checks",
+                "B. Managed Instance Group (MIG) with Autohealing",
+                "C. Multi-region Persistent Disks",
+                "D. Cross-regional replication of Persistent Disk snapshots",
+                "E. Site-to-site VPN",
+                "F. Cloud DNS (with failover policies)"
+            ],
+            "correctAnswer": "D. Cross-regional replication of Persistent Disk snapshots"
+        },
+        {
+            "question": "Your company uses Compute Engine instances as part of a distributed application. You observe that certain requests are experiencing high latency. You need a way to visualize the flow of requests across different services and identify the specific bottlenecks causing the latency. Which Google Cloud service should you use?",
+            "options": [
+                "A. Cloud Logging",
+                "B. Cloud Monitoring",
+                "C. Cloud Audit Logs",
+                "D. Cloud Trace",
+                "E. Cloud Profiler"
+            ],
+            "correctAnswer": "D. Cloud Trace"
+        },
+        {
+            "question": "You are deploying a new web application on App Engine. Before making it generally available, you want to perform load testing to ensure it can handle the expected traffic. You need a way to generate synthetic load against your App Engine application to simulate a large number of users. Which Google Cloud service can help you achieve this?",
+            "options": [
+                "A. Cloud Scheduler",
+                "B. Cloud Functions",
+                "C. Distributed Load Testing using Compute Engine (or other compute services)",
+                "D. Cloud Trace",
+                "E. Cloud Monitoring"
+            ],
+            "correctAnswer": "C. Distributed Load Testing using Compute Engine (or other compute services)"
+        },
+        {
+            "question": "Your security team requires a centralized solution to manage sensitive configuration data, such as API keys, database passwords, and cryptographic secrets, for your applications running on Google Cloud. This solution must provide fine-grained access control, versioning, and auditing capabilities. Which Google Cloud service should you use?",
+            "options": [
+                "A. Cloud Storage",
+                "B. Cloud SQL",
+                "C. Secret Manager",
+                "D. Cloud Identity and Access Management (IAM)",
+                "E. Environment variables (directly on VMs)"
+            ],
+            "correctAnswer": "C. Secret Manager"
+        },
+        {
+            "question": "Your organization wants to automatically provision and manage infrastructure on Google Cloud using a declarative configuration language. You need to define your infrastructure as code, track changes, and apply updates in a consistent and repeatable manner. Which Google Cloud solution is best suited for this purpose?",
+            "options": [
+                "A. Cloud Deployment Manager",
+                "B. Terraform",
+                "C. Cloud Build",
                 "D. Cloud Functions"
             ],
-            correctAnswer: "B. Cloud Pub/Sub"
-        },
-        {
-            question: "You have several Compute Engine instances, and you need to ensure that only specific internal IP addresses from your VPC network can access them via SSH (port 22). Which Google Cloud networking component should you configure to enforce this access control?",
-            options: [
-                "A. Routes",
-                "B. Load balancers",
-                "C. Firewall rules",
-                "D. Network interfaces"
-            ],
-            correctAnswer: "C. Firewall rules"
-        },
-        {
-            question: "Your company uses an on-premises Active Directory for user authentication. You want to integrate this with Google Cloud IAM to manage access to Google Cloud resources for your existing users. Which Google Cloud service facilitates this identity federation?",
-            options: [
-                "A. Cloud Identity",
-                "B. Identity-Aware Proxy (IAP)",
-                "C. Service Accounts",
-                "D. Managed Service for Microsoft Active Directory"
-            ],
-            correctAnswer: "A. Cloud Identity"
-        },
-        {
-            question: "You need to create an image from an existing Compute Engine instance's boot disk to create new identical instances for a testing environment. Which `gcloud` command is used to create a custom image from a disk?",
-            options: [
-                "A. `gcloud compute instances create-image`",
-                "B. `gcloud compute disks snapshot`",
-                "C. `gcloud compute images create --source-disk`",
-                "D. `gcloud compute instance-templates create`"
-            ],
-            correctAnswer: "C. `gcloud compute images create --source-disk`"
-        },
-        {
-            question: "Your application experiences fluctuating traffic patterns throughout the day. You want to ensure your Compute Engine instances automatically scale up during peak hours and scale down during off-peak hours to optimize costs and performance. Which feature of Managed Instance Groups (MIGs) achieves this?",
-            options: [
-                "A. Auto-healing",
-                "B. Instance templates",
-                "C. Autoscaling",
-                "D. Rolling updates"
-            ],
-            correctAnswer: "C. Autoscaling"
-        },
-        {
-            question: "You are designing a mobile backend for an application that requires a NoSQL document database with real-time synchronization capabilities, offline support, and client-side SDKs. Which Google Cloud service is ideal for this?",
-            options: [
-                "A. Cloud SQL",
-                "B. Cloud Bigtable",
-                "C. Cloud Firestore",
-                "D. Memorystore"
-            ],
-            correctAnswer: "C. Cloud Firestore"
-        },
-        {
-            question: "Your team wants to centralize all Docker images for your applications in Google Cloud. You need a secure, private, and fully managed service for storing and managing these container images. Which Google Cloud service provides a private container registry?",
-            options: [
-                "A. Cloud Storage",
-                "B. Artifact Registry",
-                "C. Docker Hub",
-                "D. Cloud Source Repositories"
-            ],
-            correctAnswer: "B. Artifact Registry"
-        },
-        {
-            question: "You need to configure external DNS for your Google Cloud applications. You require a highly available and scalable DNS service that integrates seamlessly with your Google Cloud resources and provides features like DNSSEC and public DNS zones. Which Google Cloud service should you use?",
-            options: [
-                "A. On-premises DNS servers",
-                "B. Third-party DNS provider",
-                "C. Cloud DNS",
-                "D. Cloud CDN"
-            ],
-            correctAnswer: "C. Cloud DNS"
-        },
-        {
-            question: "Your company has a large dataset in CSV files that needs to be loaded into BigQuery for analysis. The files are currently in a Google Cloud Storage bucket. Which BigQuery command or method is most efficient for bulk loading data from Cloud Storage into a BigQuery table?",
-            options: [
-                "A. `INSERT INTO` statement",
-                "B. `bq load` command or BigQuery UI data load",
-                "C. Stream data using Pub/Sub",
-                "D. Use Cloud SQL Federation"
-            ],
-            correctAnswer: "B. `bq load` command or BigQuery UI data load"
-        },
-        {
-            question: "You need to migrate a legacy application to Google Cloud that uses a specific version of a Linux distribution and custom libraries. The application requires full control over the operating system. Which Google Cloud compute service offers the most flexibility for OS customization?",
-            options: [
-                "A. App Engine Standard",
-                "B. Cloud Run",
-                "C. Google Kubernetes Engine (GKE)",
-                "D. Compute Engine"
-            ],
-            correctAnswer: "D. Compute Engine"
-        },
-        {
-            question: "Your company has an existing on-premises network and needs to connect it to a Google Cloud VPC network for hybrid cloud operations. You require a secure, encrypted connection over the public internet. Which Google Cloud networking product is suitable for this?",
-            options: [
-                "A. Dedicated Interconnect",
-                "B. Partner Interconnect",
-                "C. Cloud VPN",
-                "D. Direct Peering"
-            ],
-            correctAnswer: "C. Cloud VPN"
-        },
-        {
-            question: "You need to ensure that your Compute Engine instances have static internal IP addresses that persist even if the instance is stopped and restarted. Which type of IP address should you configure for the network interface?",
-            options: [
-                "A. Ephemeral external IP",
-                "B. Ephemeral internal IP",
-                "C. Static external IP",
-                "D. Static internal IP"
-            ],
-            correctAnswer: "D. Static internal IP"
-        },
-        {
-            question: "You want to deploy a globally distributed application that provides low-latency content delivery to users worldwide. You need to cache static content at edge locations close to your users. Which Google Cloud service is designed for content delivery and caching?",
-            options: [
-                "A. Cloud Load Balancing",
-                "B. Cloud CDN (Content Delivery Network)",
-                "C. Cloud Interconnect",
-                "D. Cloud DNS"
-            ],
-            correctAnswer: "B. Cloud CDN (Content Delivery Network)"
+            "correctAnswer": "A. Cloud Deployment Manager"
         }
     ]
 };
