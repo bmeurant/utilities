@@ -1,5 +1,5 @@
 This folder is rendered as a GitHub Pages website. You can access it at the following URL:
-[https://bmeurant.github.io/utilities/docs/](https://bmeurant.github.io/utilities/)
+[https://bmeurant.github.io/utilities/](https://bmeurant.github.io/utilities/)
 
 # Available Pages
 
