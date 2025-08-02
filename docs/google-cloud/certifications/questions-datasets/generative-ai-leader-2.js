@@ -952,7 +952,7 @@ allQuizData = {
                 ]
             },
             {
-                "question": "A team is developing a gen AI agent. They want the agent to use a reasoning loop to observe, interpret, reason, and act, often using a combination of prompt engineering and tools to interact with its environment. What is this process called?",
+                "question": "A team is developing a gen AI agent. They want the agent to observe, interpret, reason, and act, often using a combination of prompt engineering and tools to interact with its environment. What is this process called?",
                 "answerOptions": [
                     {
                         "text": "Supervised learning",
@@ -1032,22 +1032,22 @@ allQuizData = {
                     {
                         "text": "Only use the LLM with a highly constrained and curated set of predefined answers.",
                         "isCorrect": false,
-                        "rationale": "Cela réduit la flexibilité de l'IA générative et ne résout pas la cause profonde du problème. L'objectif est d'utiliser le modèle génératif, pas de le remplacer par des réponses statiques."
+                        "rationale": "This reduces the flexibility of generative AI and doesn't address the root cause of the problem. The goal is to use the generative model, not to replace it with static responses."
                     },
                     {
                         "text": "Implement a post-processing filter to scan and remove any potentially harmful language from the generated responses.",
                         "isCorrect": false,
-                        "rationale": "Bien que le filtrage soit une bonne pratique, il s'agit d'une solution réactive. La meilleure approche est de gérer le risque à la source, en amont du processus de génération."
+                        "rationale": "While filtering is a good practice, it's a reactive solution. The best approach is to manage the risk at its source, upstream in the generation process."
                     },
                     {
                         "text": "Use a Retrieval-Augmented Generation (RAG) approach to ground the model with safe, internal knowledge bases.",
                         "isCorrect": true,
-                        "rationale": "L'approche RAG est une stratégie proactive. En ancrant le modèle dans des données internes et validées, on réduit considérablement le risque que le modèle 'invente' ou génère du contenu inapproprié. C'est une méthode très efficace pour un contrôle accru."
+                        "rationale": "The RAG approach is a proactive strategy. By anchoring the model in internal, validated data, you significantly reduce the risk of the model 'hallucinating' or generating inappropriate content. This is a very effective method for increased control."
                     },
                     {
                         "text": "Deploy the model with a clear user warning that the responses may not be accurate or safe.",
                         "isCorrect": false,
-                        "rationale": "C'est une solution de divulgation, pas une stratégie d'atténuation du risque. Elle n'empêche pas la génération de contenu préjudiciable, elle se contente d'en informer l'utilisateur."
+                        "rationale": "This is a disclosure solution, not a risk mitigation strategy. It does not prevent the generation of harmful content; it merely informs the user about it."
                     }
                 ]
             },
@@ -1057,22 +1057,22 @@ allQuizData = {
                     {
                         "text": "Use a fully managed service like Vertex AI that handles data security by default.",
                         "isCorrect": true,
-                        "rationale": "L'utilisation de services entièrement gérés comme Vertex AI offre des garanties de sécurité et de confidentialité par conception. Les données de fine-tuning restent dans votre projet Google Cloud, ce qui est une excellente pratique pour la protection de la propriété intellectuelle."
+                        "rationale": "Using fully managed services like Vertex AI offers security and privacy guarantees by design. Fine-tuning data remains within your Google Cloud project, which is an excellent practice for protecting intellectual property."
                     },
                     {
                         "text": "Manually review every single data point in the fine-tuning dataset for sensitive information.",
                         "isCorrect": false,
-                        "rationale": "Cette approche est irréalisable et très peu fiable pour les grands ensembles de données. Elle ne garantit pas que toutes les fuites de données seront détectées."
+                        "rationale": "This approach is infeasible and highly unreliable for large datasets. It does not guarantee that all data leaks will be detected."
                     },
                     {
                         "text": "Encrypt the fine-tuning dataset with a custom key and then decrypt it before the model training.",
                         "isCorrect": false,
-                        "rationale": "L'encryptage est important pour les données au repos, mais une fois décryptées pour l'entraînement, le risque de fuite reste présent pendant le processus de fine-tuning. La gestion de l'environnement d'entraînement est cruciale."
+                        "rationale": "Encryption is important for data at rest, but once decrypted for training, the risk of leakage remains present during the fine-tuning process. Managing the training environment is crucial."
                     },
                     {
                         "text": "Delete the fine-tuning dataset immediately after the training process is complete.",
                         "isCorrect": false,
-                        "rationale": "La suppression des données après coup est une bonne pratique, mais elle ne protège pas contre la fuite d'informations pendant l'entraînement. Il est crucial de s'assurer que l'environnement de formation est sécurisé dès le départ."
+                        "rationale": "Deleting the data after the fact is a good practice, but it doesn't protect against information leakage during training. It is crucial to ensure the training environment is secure from the start."
                     }
                 ]
             },
@@ -1082,22 +1082,22 @@ allQuizData = {
                     {
                         "text": "Deploy a custom-trained model on a dedicated GPU cluster with Compute Engine.",
                         "isCorrect": false,
-                        "rationale": "L'utilisation de GPU dédiés sur Compute Engine est très coûteuse et ne s'adapte pas bien à un grand volume de requêtes courtes. C'est une solution surprovisionnée pour ce cas d'usage."
+                        "rationale": "Using dedicated GPUs on Compute Engine is very expensive and doesn't scale well for a large volume of short requests. It's an over-provisioned solution for this use case."
                     },
                     {
                         "text": "Use the pay-per-token pricing model of a public API like the Gemini API, optimized for high throughput.",
                         "isCorrect": true,
-                        "rationale": "Pour un grand volume de requêtes simples, le modèle de tarification à l'usage (pay-per-token) des API gérées est l'option la plus économique. Il permet de ne payer que pour ce qui est consommé, sans coût fixe d'infrastructure."
+                        "rationale": "For a large volume of simple requests, the pay-per-use (pay-per-token) pricing model of managed APIs is the most cost-effective option. It allows you to pay only for what is consumed, with no fixed infrastructure costs."
                     },
                     {
                         "text": "Fine-tune a large model and deploy it on a single, powerful TPU instance.",
                         "isCorrect": false,
-                        "rationale": "Les TPU sont conçus pour les charges de travail d'entraînement intensif, pas pour l'inférence à grande échelle avec un faible volume de calcul par requête. Le coût serait très élevé."
+                        "rationale": "TPUs are designed for intensive training workloads, not for large-scale inference with a low volume of computation per request. The cost would be very high."
                     },
                     {
                         "text": "Train a smaller, open-source model from scratch on a custom dataset.",
                         "isCorrect": false,
-                        "rationale": "Bien qu'un modèle plus petit soit moins coûteux à l'inférence, le coût initial de l'entraînement et le temps de développement seraient prohibitifs pour une entreprise qui cherche à optimiser ses coûts rapidement."
+                        "rationale": "While a smaller model is less expensive for inference, the initial cost of training and the development time would be prohibitive for a company looking to optimize costs quickly."
                     }
                 ]
             },
@@ -1107,22 +1107,22 @@ allQuizData = {
                     {
                         "text": "Creating a comprehensive database of all generated outputs for manual review.",
                         "isCorrect": false,
-                        "rationale": "La revue manuelle de toutes les sorties est irréalisable à grande échelle. La gouvernance doit se concentrer sur des mécanismes automatisés et des politiques pour gérer la cohérence."
+                        "rationale": "Manual review of all outputs is not feasible at scale. Governance should focus on automated mechanisms and policies to manage consistency."
                     },
                     {
                         "text": "Establishing a centralized team to approve all prompts before they are used.",
                         "isCorrect": false,
-                        "rationale": "Cette approche est un goulot d'étranglement qui ralentirait considérablement le processus de développement. La gouvernance doit permettre l'autonomie tout en imposant des garde-fous."
+                        "rationale": "This approach is a bottleneck that would significantly slow down the development process. Governance should enable autonomy while imposing safeguards."
                     },
                     {
                         "text": "Defining clear and enforceable policies for prompt engineering and model usage.",
                         "isCorrect": true,
-                        "rationale": "Un cadre de gouvernance efficace repose sur des politiques claires et applicables. Définir des politiques pour le 'prompt engineering' et l'utilisation des modèles garantit la cohérence et la conformité à grande échelle. Ces politiques peuvent ensuite être intégrées dans des workflows automatisés."
+                        "rationale": "An effective governance framework relies on clear and enforceable policies. Defining policies for 'prompt engineering' and model usage ensures consistency and compliance at scale. These policies can then be integrated into automated workflows."
                     },
                     {
                         "text": "Limiting the use of generative AI to a single, small department within the company.",
                         "isCorrect": false,
-                        "rationale": "Cela limite la portée et la valeur de l'IA générative pour l'entreprise. Un bon cadre de gouvernance doit permettre l'adoption à l'échelle de l'entreprise de manière sécurisée et contrôlée."
+                        "rationale": "This limits the scope and value of generative AI for the company. A good governance framework should allow for secure and controlled company-wide adoption."
                     }
                 ]
             },
@@ -1132,22 +1132,22 @@ allQuizData = {
                     {
                         "text": "The number of tokens the model can process per second.",
                         "isCorrect": false,
-                        "rationale": "Cette métrique est technique et ne parle pas aux dirigeants. Elle mesure l'efficacité du modèle mais pas sa valeur pour l'entreprise."
+                        "rationale": "This metric is technical and doesn't resonate with executives. It measures the model's efficiency but not its value to the business."
                     },
                     {
                         "text": "The accuracy of the model on a technical benchmark dataset.",
                         "isCorrect": false,
-                        "rationale": "L'exactitude technique est importante mais ne se traduit pas directement en valeur commerciale. Les dirigeants sont intéressés par l'impact sur les revenus, les coûts ou l'expérience client."
+                        "rationale": "Technical accuracy is important but doesn't directly translate into business value. Executives are interested in the impact on revenue, costs, or customer experience."
                     },
                     {
                         "text": "The projected reduction in operational costs or increase in revenue due to the new feature.",
                         "isCorrect": true,
-                        "rationale": "C'est la métrique la plus pertinente pour un public exécutif. Les dirigeants sont principalement concernés par le 'retour sur investissement' (ROI). Les réductions de coûts, les augmentations de revenus ou l'amélioration de la productivité sont des arguments très convaincants."
+                        "rationale": "This is the most relevant metric for an executive audience. Leaders are primarily concerned with the 'return on investment' (ROI). Cost reductions, revenue increases, or improved productivity are very compelling arguments."
                     },
                     {
                         "text": "The size of the fine-tuning dataset used to train the model.",
                         "isCorrect": false,
-                        "rationale": "La taille du jeu de données est une métrique technique qui n'a pas de sens pour un dirigeant qui veut comprendre la valeur commerciale de l'initiative."
+                        "rationale": "The size of the dataset is a technical metric that has no meaning for an executive who wants to understand the business value of the initiative."
                     }
                 ]
             },
@@ -1157,22 +1157,22 @@ allQuizData = {
                     {
                         "text": "Perform a thorough manual review of all data points in the training set.",
                         "isCorrect": false,
-                        "rationale": "Comme mentionné précédemment, la revue manuelle est irréalisable pour de grands ensembles de données. Elle ne constitue pas une défense fiable contre des attaques sophistiquées."
+                        "rationale": "As mentioned previously, manual review is not feasible for large datasets. It does not provide a reliable defense against sophisticated attacks."
                     },
                     {
                         "text": "Use federated learning where the model is fine-tuned on decentralized data without it being exposed directly.",
                         "isCorrect": false,
-                        "rationale": "Le 'federated learning' protège la confidentialité des données, mais il ne protège pas contre la 'poisoning attack' si les données de la source sont déjà compromises."
+                        "rationale": "Federated learning protects data privacy, but it does not protect against 'poisoning attacks' if the source data is already compromised."
                     },
                     {
                         "text": "Implement data validation and sanitization pipelines to detect and remove malicious or corrupted data.",
                         "isCorrect": true,
-                        "rationale": "La meilleure défense contre l'empoisonnement des données est une stratégie de 'validation et de désinfection' rigoureuse des données en amont de l'entraînement. Des pipelines automatisés peuvent détecter des anomalies et des modèles malveillants avant qu'ils ne soient introduits dans le modèle."
+                        "rationale": "The best defense against data poisoning is a rigorous 'data validation and sanitization' strategy upstream of training. Automated pipelines can detect anomalies and malicious patterns before they are introduced into the model."
                     },
                     {
                         "text": "Use a pre-trained model from a trusted source, and avoid fine-tuning it with external data.",
                         "isCorrect": false,
-                        "rationale": "Cela contourne le problème mais ne permet pas de bénéficier des avantages du fine-tuning pour adapter le modèle à des besoins spécifiques, ce qui est souvent une exigence clé."
+                        "rationale": "This bypasses the problem but does not allow for the benefits of fine-tuning to adapt the model to specific needs, which is often a key requirement."
                     }
                 ]
             },
@@ -1182,22 +1182,22 @@ allQuizData = {
                     {
                         "text": "Hire a dedicated team of AI engineers to build and manage a custom model on Compute Engine.",
                         "isCorrect": false,
-                        "rationale": "Cette approche est longue et coûteuse, et elle nécessite l'embauche d'experts, ce qui va à l'encontre de l'objectif de minimiser le fardeau opérationnel et d'accélérer le 'time-to-market'."
+                        "rationale": "This approach is long and costly, and it requires hiring experts, which goes against the goal of minimizing operational burden and accelerating 'time-to-market'."
                     },
                     {
                         "text": "Use a Vertex AI Pipelines workflow to automate the entire ML lifecycle from scratch.",
                         "isCorrect": false,
-                        "rationale": "Vertex AI Pipelines est un outil puissant pour les experts ML, mais il nécessite un certain niveau de compétence pour être mis en place. Ce n'est pas l'approche la plus simple pour une équipe sans expertise ML."
+                        "rationale": "Vertex AI Pipelines is a powerful tool for ML experts, but it requires a certain level of skill to set up. It is not the simplest approach for a team without ML expertise."
                     },
                     {
                         "text": "Leverage a generative AI API (e.g., Gemini API) with Generative AI Studio for rapid prototyping.",
                         "isCorrect": true,
-                        "rationale": "L'utilisation d'API de modèles existants avec des outils comme Generative AI Studio permet à des équipes non expertes de prototyper et de déployer des solutions d'IA générative très rapidement, sans avoir à se soucier de l'infrastructure sous-jacente ou de la gestion de modèles complexes. C'est l'approche la plus rapide et la plus simple."
+                        "rationale": "Using existing model APIs with tools like Generative AI Studio allows non-expert teams to prototype and deploy generative AI solutions very quickly, without worrying about the underlying infrastructure or complex model management. It is the fastest and simplest approach."
                     },
                     {
                         "text": "Download an open-source model from Hugging Face and deploy it on a GKE cluster.",
                         "isCorrect": false,
-                        "rationale": "Le déploiement d'un modèle open-source sur GKE demande des compétences en DevOps, en orchestration de conteneurs et en gestion de l'infrastructure, ce qui ne correspond pas au profil d'une équipe sans expertise ML."
+                        "rationale": "Deploying an open-source model on GKE requires skills in DevOps, container orchestration, and infrastructure management, which does not match the profile of a team without ML expertise."
                     }
                 ]
             },
@@ -1207,22 +1207,22 @@ allQuizData = {
                     {
                         "text": "Use a much larger fine-tuning dataset, regardless of its quality or source.",
                         "isCorrect": false,
-                        "rationale": "Un plus grand volume de données de mauvaise qualité ne fait qu'aggraver les problèmes. La qualité des données est plus importante que la quantité pour éviter le 'model collapse'."
+                        "rationale": "A larger volume of poor-quality data will only exacerbate the problems. Data quality is more important than quantity to prevent 'model collapse'."
                     },
                     {
                         "text": "Integrate a human-in-the-loop review process to correct and validate the generated output before use.",
                         "isCorrect": true,
-                        "rationale": "Le 'human-in-the-loop' est une stratégie très efficace. L'intégration d'un processus de validation humaine permet de s'assurer que seules des données de haute qualité et factuellement correctes sont utilisées pour le fine-tuning ou l'amélioration des futurs modèles. Cela brise la boucle de rétroaction négative des données de mauvaise qualité."
+                        "rationale": "The 'human-in-the-loop' is a very effective strategy. Integrating a human validation process ensures that only high-quality, factually correct data is used for fine-tuning or improving future models. This breaks the negative feedback loop of poor-quality data."
                     },
                     {
                         "text": "Use a different generative model that is not susceptible to 'model collapse'.",
                         "isCorrect": false,
-                        "rationale": "Le 'model collapse' est un risque inhérent au fine-tuning sur des données de plus en plus générées par l'IA. Changer de modèle ne résout pas le problème si la stratégie de données est défaillante."
+                        "rationale": "'Model collapse' is an inherent risk of fine-tuning on increasingly AI-generated data. Changing the model doesn't solve the problem if the data strategy is flawed."
                     },
                     {
                         "text": "Increase the learning rate during the fine-tuning process to speed up training.",
                         "isCorrect": false,
-                        "rationale": "Modifier des hyperparamètres d'entraînement comme le 'learning rate' n'a pas d'impact direct sur la qualité des données et ne résout pas le problème fondamental du 'model collapse'."
+                        "rationale": "Modifying training hyperparameters like the 'learning rate' has no direct impact on data quality and does not solve the fundamental 'model collapse' problem."
                     }
                 ]
             },
@@ -1232,22 +1232,22 @@ allQuizData = {
                     {
                         "text": "Use a generative model hosted on-premises to keep data within their own network.",
                         "isCorrect": false,
-                        "rationale": "Les modèles sur site sont coûteux et complexes à gérer. De plus, cela ne garantit pas la conformité au GDPR si les processus de gestion des données ne sont pas correctement appliqués."
+                        "rationale": "On-premise models are costly and complex to manage. Furthermore, this does not guarantee GDPR compliance if data management processes are not properly applied."
                     },
                     {
                         "text": "Anonymize and de-identify all customer data before it is used for fine-tuning or inference.",
                         "isCorrect": true,
-                        "rationale": "L'anonymisation et la désidentification des données sont des étapes cruciales pour la protection de la vie privée et la conformité au GDPR. En supprimant ou en masquant les informations personnellement identifiables (PII), l'entreprise réduit le risque de fuite de données et de non-conformité."
+                        "rationale": "Anonymizing and de-identifying data are crucial steps for privacy protection and GDPR compliance. By removing or masking personally identifiable information (PII), the company reduces the risk of data leakage and non-compliance."
                     },
                     {
                         "text": "Obtain explicit consent from every customer to use their data for AI training.",
                         "isCorrect": false,
-                        "rationale": "Bien que le consentement soit important pour certaines utilisations, l'anonymisation des données est une méthode plus fiable et plus efficace à grande échelle pour se conformer au GDPR, car elle supprime le besoin de gérer des consentements individuels pour le traitement des données."
+                        "rationale": "While consent is important for certain uses, data anonymization is a more reliable and scalable method for GDPR compliance, as it removes the need to manage individual consents for data processing."
                     },
                     {
                         "text": "Deploy the solution in a Google Cloud region that is physically located within the EU.",
                         "isCorrect": false,
-                        "rationale": "La localisation des données est importante, mais elle ne suffit pas. Le GDPR exige également que les données soient traitées de manière appropriée et que leur confidentialité soit protégée, ce qui passe par l'anonymisation et des mesures de sécurité adéquates."
+                        "rationale": "Data location is important, but it is not sufficient on its own. GDPR also requires that data be processed appropriately and that its confidentiality be protected, which involves anonymization and adequate security measures."
                     }
                 ]
             }
