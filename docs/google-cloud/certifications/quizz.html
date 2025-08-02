@@ -3,470 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Quizz</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1, h2 {
-            color: #0056b3;
-            text-align: center;
-        }
-        .quiz-selection-container {
-            text-align: center;
-            margin: 20px 0 30px 0;
-        }
-        #quiz-selector {
-            font-size: 1.1em;
-            padding: 8px 12px;
-            min-width: 350px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        label[for="quiz-selector"] {
-            font-size: 1.1em;
-            margin-right: 10px;
-        }
-        .question-block {
-            margin-bottom: 25px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .question-text {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-            color: #333;
-        }
-        .options label {
-            display: block;
-            margin-bottom: 8px;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 3px;
-            transition: background-color 0.2s ease;
-        }
-        .options label:hover {
-            background-color: #e2e2e2;
-        }
-        .options input[type="radio"] {
-            margin-right: 8px;
-        }
-        .feedback {
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 4px;
-        }
-        .correct {
-            background-color: #d4edda;
-            color: #155724;
-            border-color: #c3e6cb;
-        }
-        .incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
-        }
-        .score-display {
-            position: sticky;
-            top: 0;
-            background-color: #0056b3;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            font-size: 1.2em;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000;
-            margin-bottom: 20px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #666;
-        }
-        .answered .options label {
-            pointer-events: none;
-        }
-        .answered .options label.selected-correct {
-            background-color: #c3e6cb;
-        }
-        .answered .options label.selected-incorrect {
-            background-color: #f5c6cb;
-        }
-        .answered .options label.correct-answer-highlight {
-            background-color: #d4edda;
-            border: 1px dashed #155724;
-        }
-        .submit-button {
-            display: block;
-            width: 200px;
-            margin: 30px auto;
-            padding: 15px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
-            cursor: not-allowed;
-            opacity: 0.6;
-            transition: opacity 0.3s ease, background-color 0.3s ease;
-        }
-        .submit-button:enabled {
-            cursor: pointer;
-            opacity: 1;
-            background-color: #218838;
-        }
-        .submit-button:enabled:hover {
-            background-color: #1e7e34;
-        }
-        .summary-section {
-            margin-top: 40px;
-            padding: 25px;
-            border: none;
-            background-color: #fff;
-            text-align: left;
-            display: none;
-        }
-        .summary-title {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 25px;
-            color: #333;
-        }
-        .summary-cards {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        .summary-card {
-            background-color: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            flex-grow: 1;
-            flex-basis: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .summary-card .card-title {
-            font-size: 1em;
-            color: #6c757d;
-            margin: 0 0 10px 0;
-        }
-        .summary-card .card-value {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #212529;
-            margin: 0;
-        }
-        .summary-card .card-breakdown {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 10px 20px;
-            font-size: 1.1em;
-        }
-        .card-breakdown span:nth-child(odd) {
-            text-align: left;
-            color: #6c757d;
-        }
-        .card-breakdown span:nth-child(even) {
-            text-align: right;
-            font-weight: bold;
-            color: #212529;
-        }
-    </style>
+    <title>Cloud Quizz - Modern</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="quizz-modern.css">
 </head>
 <body>
-<div class="score-display">
-    Score: <span id="current-score">0</span> / <span id="answered-count">0</span>
-    (Total questions: <span id="total-questions">0</span>)
-</div>
-<div class="container">
-    <h1 id="quiz-title">Cloud Quizz</h1>
+    <div class="container py-5">
+        <header class="text-center mb-5">
+            <h1 id="quiz-title" class="display-4">Cloud Quizz</h1>
+            <p class="lead text-muted">Test your knowledge with our interactive quizzes.</p>
+        </header>
 
-    <div class="quiz-selection-container">
-        <label for="quiz-selector">Choose a Quiz:</label>
-        <select id="quiz-selector"></select>
-    </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="quiz-selection-container mb-4">
+                    <label for="quiz-selector" class="form-label">Choose a Quiz:</label>
+                    <select id="quiz-selector" class="form-select"></select>
+                </div>
 
-    <div id="quiz-questions">
-    </div>
+                <div class="score-display sticky-top mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            Score: <span id="current-score" class="fw-bold">0</span> / <span id="answered-count" class="fw-bold">0</span>
+                        </div>
+                        <div>
+                            Total Questions: <span id="total-questions" class="fw-bold">0</span>
+                        </div>
+                    </div>
+                </div>
 
-    <button id="submit-quiz" class="submit-button" disabled>Submit Quiz</button>
+                <div id="quiz-questions"></div>
 
-    <div id="quiz-summary" class="summary-section">
-        <h3 class="summary-title">You Did it! Quiz Complete</h3>
-        <div class="summary-cards">
-            <div class="summary-card">
-                <p class="card-title">Score</p>
-                <p class="card-value" id="summary-score-value">0/0</p>
-            </div>
-            <div class="summary-card">
-                <p class="card-title">Accuracy</p>
-                <p class="card-value" id="summary-accuracy-value">0%</p>
-            </div>
-            <div class="summary-card">
-                <p class="card-title">Result</p>
-                <p class="card-value" id="summary-result-value"></p>
-            </div>
-            <div class="summary-card">
-                <div class="card-breakdown">
-                    <span>Right</span><span id="summary-right-value">0</span>
-                    <span>Wrong</span><span id="summary-wrong-value">0</span>
+                <div class="text-center">
+                    <button id="submit-quiz" class="btn btn-primary btn-lg d-block mx-auto" disabled>Submit Quiz</button>
+                </div>
+
+                <div id="quiz-summary" class="summary-section mt-5" style="display: none;">
+                    <h3 class="summary-title text-center mb-4">You Did it! Quiz Complete</h3>
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <p class="card-title">Score</p>
+                            <p class="card-value" id="summary-score-value">0/0</p>
+                        </div>
+                        <div class="summary-card">
+                            <p class="card-title">Accuracy</p>
+                            <p class="card-value" id="summary-accuracy-value">0%</p>
+                        </div>
+                        <div class="summary-card">
+                            <p class="card-title">Result</p>
+                            <p class="card-value" id="summary-result-value">FAIL</p>
+                        </div>
+                        <div class="summary-card">
+                            <div class="card-breakdown">
+                                <span>Right</span><span id="summary-right-value">0</span>
+                                <span>Wrong</span><span id="summary-wrong-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button id="reset-quiz" class="btn btn-primary btn-lg">Try Again</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <footer class="text-center mt-5 text-muted">
+            <p>Generated by your AI assistant.</p>
+        </footer>
     </div>
 
-    <div class="footer">
-        Generated by your AI assistant.
-    </div>
-</div>
-
-<script>
-    let score = 0;
-    let answeredCount = 0;
-    let totalQuestions = 0;
-    let quizQuestions = [];
-    let allQuizData = {};
-
-    const quizContainer = document.getElementById('quiz-questions');
-    const currentScoreSpan = document.getElementById('current-score');
-    const answeredCountSpan = document.getElementById('answered-count');
-    const totalQuestionsSpan = document.getElementById('total-questions');
-    const submitButton = document.getElementById('submit-quiz');
-    const quizSummary = document.getElementById('quiz-summary');
-    const quizSelector = document.getElementById('quiz-selector');
-    const quizTitle = document.getElementById('quiz-title');
-
-    const availableDatasets = [
-        { file: 'ace.js', title: 'Associate Cloud Engineer' },
-        { file: 'ace-easy.js', title: 'Associate Cloud Engineer - Easy' },
-        { file: 'generative-ai-leader.js', title: 'Generative AI Leader' },
-        { file: 'generative-ai-leader-2.js', title: 'Generative AI Leader 2' }
-    ];
-
-    function populateQuizSelector() {
-        availableDatasets.forEach(dataset => {
-            const option = document.createElement('option');
-            option.value = dataset.file;
-            option.textContent = dataset.title;
-            quizSelector.appendChild(option);
-        });
-
-        quizSelector.addEventListener('change', (event) => {
-            loadDataset(event.target.value);
-        });
-
-        if (availableDatasets.length > 0) {
-            loadDataset(availableDatasets[0].file);
-        }
-    }
-
-    function loadDataset(datasetFile) {
-        const existingScript = document.getElementById('quiz-data-script');
-        if (existingScript) {
-            existingScript.remove();
-        }
-
-        const script = document.createElement('script');
-        script.id = 'quiz-data-script';
-        script.src = `questions-datasets/${datasetFile}`;
-        script.onload = () => {
-            const quizNames = Object.keys(allQuizData);
-            if (quizNames.length > 0) {
-                loadQuiz(quizNames[0]);
-            } else {
-                console.error("No quiz data found in the loaded file:", datasetFile);
-                quizContainer.innerHTML = "<p style='color:red;'>Error: Could not find any quiz data in the selected file.</p>";
-            }
-        };
-        script.onerror = () => {
-            console.error("Failed to load the quiz dataset:", datasetFile);
-            quizContainer.innerHTML = "<p style='color:red;'>Error: Failed to load the questions. Please check the file path and content.</p>";
-        };
-
-        document.body.appendChild(script);
-    }
-
-    function loadQuiz(quizName) {
-        const pageTitle = `${quizName} Quizz`;
-        quizTitle.textContent = pageTitle;
-        document.title = pageTitle;
-
-        quizQuestions = allQuizData[quizName].questions;
-        totalQuestions = quizQuestions.length;
-        resetQuiz();
-        renderQuiz();
-    }
-
-    function resetQuiz() {
-        score = 0;
-        answeredCount = 0;
-        quizContainer.innerHTML = '';
-        submitButton.disabled = true;
-        submitButton.style.display = 'block';
-        quizSummary.style.display = 'none';
-        currentScoreSpan.textContent = '0';
-        answeredCountSpan.textContent = '0';
-        totalQuestionsSpan.textContent = totalQuestions;
-    }
-
-    function renderQuiz() {
-        try {
-            if (quizQuestions.length === 0) {
-                quizContainer.innerHTML = "<p style='color:orange;'>No questions loaded. Please check the quiz data.</p>";
-                return;
-            }
-            quizQuestions.forEach((q, index) => {
-                const questionBlock = document.createElement('div');
-                questionBlock.className = 'question-block';
-                questionBlock.id = `question-${index}`;
-
-                const questionText = document.createElement('div');
-                questionText.className = 'question-text';
-                questionText.textContent = `${index + 1}. ${q.question}`;
-                questionBlock.appendChild(questionText);
-
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'options';
-
-                q.answerOptions.forEach((option, optionIndex) => {
-                    const label = document.createElement('label');
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.name = `question-${index}`;
-                    
-                    radio.dataset.questionIndex = index;
-                    radio.dataset.optionIndex = optionIndex;
-
-                    radio.addEventListener('change', onAnswerSelected);
-
-                    label.appendChild(radio);
-                    label.appendChild(document.createTextNode(option.text));
-                    optionsDiv.appendChild(label);
-                });
-
-                questionBlock.appendChild(optionsDiv);
-
-                const feedbackDiv = document.createElement('div');
-                feedbackDiv.className = 'feedback';
-                feedbackDiv.id = `feedback-${index}`;
-                questionBlock.appendChild(feedbackDiv);
-
-                quizContainer.appendChild(questionBlock);
-            });
-        } catch (error) {
-            console.error("Error during quiz rendering:", error);
-            quizContainer.innerHTML = "<p style='color:red;'>An error occurred while loading questions. Please check the browser console for more details.</p>";
-        }
-    }
-
-    function onAnswerSelected(event) {
-        const selectedRadio = event.target;
-        const questionIndex = parseInt(selectedRadio.dataset.questionIndex);
-        const optionIndex = parseInt(selectedRadio.dataset.optionIndex);
-
-        const questionBlock = document.getElementById(`question-${questionIndex}`);
-        const feedbackDiv = document.getElementById(`feedback-${questionIndex}`);
-        const optionsDiv = questionBlock.querySelector('.options');
-
-        if (questionBlock.classList.contains('answered')) {
-            return;
-        }
-
-        questionBlock.classList.add('answered');
-        const radios = optionsDiv.querySelectorAll(`input[name="question-${questionIndex}"]`);
-        radios.forEach(radio => radio.disabled = true);
-
-        const questionData = quizQuestions[questionIndex];
-        const selectedOption = questionData.answerOptions[optionIndex];
-        const isCorrect = selectedOption.isCorrect;
-
-        let feedbackHTML = isCorrect ? "<strong>Correct.</strong>" : "<strong>Incorrect.</strong>";
-        if (selectedOption.rationale) {
-            feedbackHTML += " " + selectedOption.rationale;
-        } else {
-            const correctAnswer = questionData.answerOptions.find(opt => opt.isCorrect);
-            if (!isCorrect && correctAnswer) {
-                 feedbackHTML += ` The correct answer was: ${correctAnswer.text}`;
-            }
-        }
-
-        if (isCorrect) {
-            score++;
-            feedbackDiv.classList.add('correct');
-            feedbackDiv.classList.remove('incorrect');
-            selectedRadio.parentElement.classList.add('selected-correct');
-        } else {
-            feedbackDiv.classList.add('incorrect');
-            feedbackDiv.classList.remove('correct');
-            selectedRadio.parentElement.classList.add('selected-incorrect');
-
-            questionData.answerOptions.forEach((opt, idx) => {
-                if (opt.isCorrect) {
-                    optionsDiv.children[idx].classList.add('correct-answer-highlight');
-                }
-            });
-        }
-        
-        feedbackDiv.innerHTML = feedbackHTML;
-
-        answeredCount++;
-        currentScoreSpan.textContent = score;
-        answeredCountSpan.textContent = answeredCount;
-
-        if (answeredCount === totalQuestions) {
-            submitButton.disabled = false;
-        }
-    }
-
-    function showQuizSummary() {
-        const summaryScoreValue = document.getElementById('summary-score-value');
-        const summaryAccuracyValue = document.getElementById('summary-accuracy-value');
-        const summaryRightValue = document.getElementById('summary-right-value');
-        const summaryWrongValue = document.getElementById('summary-wrong-value');
-        const summaryResultValue = document.getElementById('summary-result-value');
-
-        const wrongAnswers = answeredCount - score;
-        const accuracy = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
-
-        summaryScoreValue.textContent = `${score}/${totalQuestions}`;
-        summaryAccuracyValue.textContent = `${accuracy.toFixed(0)}%`;
-        summaryRightValue.textContent = score;
-        summaryWrongValue.textContent = wrongAnswers;
-
-        if (accuracy >= 70) {
-            summaryResultValue.textContent = "PASS";
-            summaryResultValue.style.color = '#28a745'; // Green
-        } else {
-            summaryResultValue.textContent = "FAIL";
-            summaryResultValue.style.color = '#dc3545'; // Red
-        }
-
-        quizSummary.style.display = 'block';
-        submitButton.style.display = 'none';
-
-        quizSummary.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    submitButton.addEventListener('click', showQuizSummary);
-
-    document.addEventListener('DOMContentLoaded', populateQuizSelector);
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="quizz-modern.js"></script>
 </body>
 </html>
