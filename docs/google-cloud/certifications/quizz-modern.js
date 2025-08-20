@@ -188,7 +188,6 @@ function onAnswerSelected(event) {
     }
 
     if (isCorrect) {
-        score++;
         feedbackDiv.classList.add('correct');
         feedbackDiv.classList.remove('incorrect');
     } else {
