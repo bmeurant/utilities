@@ -4,3 +4,4 @@
 - [GSP315 - Set Up an App Dev Environment on Google Cloud](./gsp315.md)
 - [GSP321 - Develop your Google Cloud Network](./gsp321.md)
 - [GSP345 - Build Infrastructure with Terraform on Google Cloud](./gsp345.md)
+- [GSP520 - Inspect Rich Documents with Gemini Multimodality and Multimodal RAG](./gsp520.ipynb)
