@@ -31,8 +31,7 @@
 
 ### France
 
-- [BPI France](https://bigmedia.bpifrance.fr/nos-dossiers/
-comment-deployer-une-ia-responsable-dans-votre-entreprise)
+- [BPI France](https://bigmedia.bpifrance.fr/nos-dossiers/comment-deployer-une-ia-responsable-dans-votre-entreprise)
 - [Impact AI](https://www.impact-ai.fr/fr/ia-responsable-2/)
 - [Afnor](https://www.afnor.org/actualites/une-norme-et-une-certification-qualite-pour-lia/)
 
