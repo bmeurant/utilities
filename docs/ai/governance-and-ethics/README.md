@@ -9,7 +9,7 @@
 ## Regulations
 
 - [European approach to artificial intelligence](https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence)
-- [EU AI Act](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:52021PC0206)
+- [EU AI Act](https://artificialintelligenceact.eu/)
 - [What the draft European Union AI regulations mean for business](https://www.mckinsey.com/capabilities/quantumblack/our-insights/what-the-draft-european-union-ai-regulations-mean-for-business)
 - [JSON Spec for Transparency Obligations of the EU AI Act](https://huggingface.co/datasets/AdrianGonzalezSanchez/AISBOM)
 
