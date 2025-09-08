@@ -15,9 +15,10 @@
 
 ## Standards
 
-- [ISO - Responsible AI](https://www.iso.org/artificial-intelligence/responsible-ai-ethics)
 - [ISO](https://www.iso.org/search.html?PROD_isoorg_en%5Bquery%5D=artificial%20intelligence)
 - [ISO - IEC 42001](https://www.iso.org/obp/ui/en/#iso:std:iso-iec:42001:ed-1:v1:en)
+- [ISO - Responsible AI](https://www.iso.org/artificial-intelligence/responsible-ai-ethics)
+- [NIST – AI RMF](https://www.nist.gov/itl/ai-risk-management-framework)
 
 ## Industry
 
