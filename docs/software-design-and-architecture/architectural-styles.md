@@ -134,3 +134,14 @@ The **Pipe and Filter** style structures a system to process a stream of data. T
     * **Batch vs. Streaming**: The style is best suited for streaming data. Batch processing may require different approaches.
     * **Filter Complexity**: Overly complex filters can make the system harder to maintain.
     * **Data Format**: A standardized data format must be maintained between filters, which can be restrictive.
+
+### **11. Client-Server Architecture**
+
+The **Client-Server** model is a fundamental architectural style that separates a system into two main components: clients and servers. The client sends requests to the server, and the server responds by providing the requested services or data.
+
+* **Analogy**: A restaurant. The customer (client) places an order with the waiter (server), who then takes the order to the kitchen (database/services). The waiter then delivers the food back to the customer.
+* **Best For**: The vast majority of internet-based applications, including websites, email systems, and online games.
+* **Challenges**:
+    * **Single Point of Failure**: If the server goes down, all clients are affected.
+    * **Network Latency**: Communication between the client and server relies on the network, which can introduce delays.
+    * **Security**: It's crucial to secure both the client and server to prevent unauthorized access and data breaches.
