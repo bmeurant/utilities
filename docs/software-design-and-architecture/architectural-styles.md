@@ -99,25 +99,7 @@ DDD is a software development approach that focuses on connecting the implementa
 
 ***
 
-## **8. Hexagonal Architecture**
-
-The Hexagonal Architecture (also known as Ports and Adapters) is a design pattern that isolates the **core logic of an application** from external systems. The goal is to make the application independent of external factors like user interfaces, databases, or third-party services.
-
-* **Analogy**: A central robot brain that communicates with the outside world only through standardized plugs and sockets. The external devices (like a camera or a robotic arm) are the adapters that plug into these sockets.
-* **Best For**: Applications with complex business logic that need to be tested and maintained independently of their external dependencies.
-* **Challenges**: The initial setup can be complex and requires a strong understanding of dependency inversion principles. It may be overkill for simple applications.
-
-**Hexagonal and DDD Complementarity**: Hexagonal architecture and Domain-Driven Design (DDD) are highly complementary and often used together. The Hexagonal pattern provides the structural framework that enables the core principles of DDD to be implemented effectively.
-
-DDD's Goal: To build a robust model of the business domain, which is the heart of the application.
-
-Hexagonal's Goal: To isolate the core business logic from external dependencies like databases, UIs, and frameworks.
-
-By using a Hexagonal architecture, you can ensure that the "domain model" in your DDD approach remains clean and pure, free from any technical details. The ports define what the core needs, and the adapters handle the specific technology. This makes the domain model easier to test, maintain, and reason about, which is a key objective of DDD.
-
-***
-
-## **9. Microkernel Architecture**
+## **8. Microkernel Architecture**
 
 Microkernel Architecture (also known as the Plugin Architecture) is a style that separates a minimal **core system (the microkernel)** from a set of **extended functionalities (plugins)**. The microkernel provides the bare minimum required to run the system, while plugins handle specific features and can be added or removed without modifying the core.
 
@@ -126,3 +108,29 @@ Microkernel Architecture (also known as the Plugin Architecture) is a style that
 * **Challenges**: The communication between the core and the plugins can be complex and may introduce performance overhead. It can be difficult to manage and test the interactions of numerous plugins.
 
 **Microkernel and Component-based differences**: Component-based and microkernel architectures both embrace modularity, but they operate at different scales and for distinct purposes. Component-based architecture is a general design principle that focuses on building an application from reusable, independent modules that can communicate directly with each other. It's a broad concept applicable to a wide range of systems. In contrast, microkernel architecture is a specialized style that separates a minimal, highly-privileged core from a set of non-privileged plugins. All communication between the plugins is mediated by this central microkernel, which enhances security and reliability. While distinct, the two are complementary, as a microkernel system is, by its nature, a highly specific and disciplined form of component-based architecture.
+
+***
+
+## **9. Serverless Architecture**
+
+The **Serverless Architecture** is a style where the cloud provider manages the infrastructure, and the developers only focus on writing and deploying code in the form of functions. The application runs on-demand, triggered by events, and the developer does not need to provision or manage servers.
+
+* **Analogy**: A utility service like electricity. You don't have to manage the power plant; you just use the electricity and pay for what you consume.
+* **Best For**: Event-driven applications, highly variable workloads, and microservice-like applications that need to be deployed and scaled quickly without managing infrastructure.
+* **Challenges**:
+    * **Vendor Lock-in**: The application becomes highly dependent on the cloud provider's ecosystem.
+    * **Debugging**: Debugging distributed functions across a cloud platform can be challenging.
+    * **Cold Starts**: There can be a delay when a function is invoked for the first time after a period of inactivity.
+
+***
+
+### **10. Pipe and Filter Architecture**
+
+The **Pipe and Filter** style structures a system to process a stream of data. The data flows through a series of sequential steps, where each step is a **"filter"** that performs a specific transformation on the data. The output of one filter is the input for the next, connected by **"pipes."**
+
+* **Analogy**: A car wash. The car goes through a sequence of steps—the pre-wash filter, the soap filter, the rinse filter, and the drying filter—with each step performing a specific task.
+* **Best For**: Data processing pipelines, compilers, and workflow applications that handle a stream of data transformations.
+* **Challenges**:
+    * **Batch vs. Streaming**: The style is best suited for streaming data. Batch processing may require different approaches.
+    * **Filter Complexity**: Overly complex filters can make the system harder to maintain.
+    * **Data Format**: A standardized data format must be maintained between filters, which can be restrictive.
