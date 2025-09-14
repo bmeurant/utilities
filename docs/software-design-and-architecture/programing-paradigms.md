@@ -49,9 +49,13 @@ This is the most fundamental distinction.
     This is a paradigm where programs express **facts** and **rules**, and a built-in "inference engine" deduces new information from them. The programmer describes the knowledge, and the system finds the solutions.
     * **Example:** Prolog is a popular language for this paradigm. A program can state "John is a parent of Marie" and define a rule for "grandfather," and the system can then deduce who Marie's grandfather is.
 
-4.  **Event-Driven Programming:**
-    In this paradigm, the flow of the program is determined by **events**, such as a user clicking a mouse button, a keypress, or a message from another program. The program waits for an event to occur and then reacts to it.
-    * **Example:** Graphical user interfaces (GUIs) are a classic example. When a user clicks a button, a specific function (an "event handler") is executed.
+4. **Event-Driven Programming:** In this paradigm,   the flow of the program is determined by **events**, such as a user clicking a mouse button or a keypress. The program waits for an event and then reacts by executing a specific function (an **event handler**). It's a "wait and see" approach.
+    * **Example:** A graphical user interface (GUI) where a button click triggers a function to save a file.
+
+5. **Reactive Programming:** This is a more sophisticated paradigm built on the idea of **data streams** and the propagation of change. It's about building systems that automatically update when data changes. While it relies on events, it treats them as continuous streams of data that can be filtered, transformed, and combined.
+    * **Example:** A spreadsheet where changing the value of one cell automatically updates the values of all other cells that depend on it.
+
+    **Key Differences between event-driven and reactive:** Event-driven programming is about reacting to individual, discrete events. Reactive programming takes this a step further by treating sequences of events as continuous data streams, focusing on how changes automatically propagate through the system. All reactive systems are event-driven, but not all event-driven systems are reactive.
 
 ---
 
