@@ -41,25 +41,6 @@
 
 ---
 
-## **Hexagonal Architecture (Ports-and-Adapters) Pattern**
-
-**Hexagonal Architecture**, or **Ports-and-Adapters**, is a pattern for creating an application where the core business logic is completely isolated from external technologies. It uses **Ports** (interfaces) and **Adapters** (specific implementations) to connect the core to technologies like a database, a user interface, or an API. It's a key tool for **Domain-Driven Design (DDD)**.
-
-* **Examples and Use Cases:**
-    * **Enterprise Software:** A stock management system's core logic (how stocks are updated) is in the center of the hexagon. Adapters can connect this core to a SQL database for storage, a REST API for queries, or a command-line interface for administration.
-    * **Technology Startups:** This pattern allows a startup to begin with a simple database (like SQLite) and replace it with a more robust solution (like PostgreSQL) later, by only changing the adapter without modifying the business logic.
-
-* **Best for:**
-    * **Testability:** The core logic can be tested easily, without depending on the infrastructure.
-    * **Modularity:** Allows for changing external dependencies without affecting the application's core.
-    * **Design Clarity:** Helps focus on the most important business logic.
-
-* **Challenges:**
-    * **Initial Complexity:** Can be excessive for small projects.
-    * **Inverted Dependencies:** Requires a good understanding of interfaces and abstractions to avoid accidental dependencies.
-
----
-
 ## **Pipe-and-Filter Pattern**
 
 The **Pipe-and-Filter** pattern is used for building systems that process a stream of data in a sequential manner. Each processing step is encapsulated in a **Filter**, and the data is passed from one filter to the next via a **Pipe**.
